@@ -50,8 +50,9 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   double _sodium = 0;
   int weight = 0;
-  double _target = 0;
-  double _ivfRate = 0;
+  double _target = 0.00;
+  String _ivfRate = '';
+
   String _selectedOption = '';
 
   @override
@@ -153,11 +154,12 @@ class _MyHomePageState extends State<MyHomePage> {
                 SizedBox(height: 16.0),
                 ElevatedButton(
                   child: Text('Calculate'),
-                  onPressed: () => setState(() =>
-                      _ivfRate = calculateIVFRate(_sodium, weight, _target)),
+                  onPressed: () => setState(() => _ivfRate =
+                      calculateIVFRate(_sodium, weight, _target)
+                          .toStringAsFixed(2)),
                 ),
                 SizedBox(height: 16.0),
-                Text(_ivfRate != null ? 'IVF rate: $_ivfRate' : ''),
+                Text(_ivfRate != null ? 'Free water deficit: $_ivfRate' : ''),
               ],
             ),
           ),
@@ -170,5 +172,5 @@ class _MyHomePageState extends State<MyHomePage> {
 double calculateIVFRate(double sodium, int weight, double target) {
   // Calculate IVF rate here using the provided sodium, age, and target values
   // This is just a sample function and the actual calculation will depend on your specific requirements
-  return (sodium * weight) / target;
+  return ((sodium - target) / target) * weight.toDouble() * 0.55.toDouble();
 }
