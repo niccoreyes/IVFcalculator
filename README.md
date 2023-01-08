@@ -1,6 +1,7 @@
 # ivf_correction_calculator
 
-A new Flutter project.
+Go directly to the site:
+https://niccoreyes.github.io/IVFcalculator/build/web/
 
 ## Getting Started
 
