@@ -11,7 +11,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'IVF calculator - by Thomas Reyes',
+      title: 'USTH Hypernatremia IVF calculator',
       theme: ThemeData(
         // This is the theme of your application.
         //
@@ -53,7 +53,20 @@ class _MyHomePageState extends State<MyHomePage> {
   double _target = 0.00;
   String _ivfRate = '';
 
-  String _selectedOption = '';
+  double calculatedFWD = 0.00;
+
+  String sex = 'Male';
+
+  String _selectedOption = "";
+  double _ageType = 0.0;
+
+  static List<String> mgStrings = ['⬇️ mg/dL', 'Target mg/dL'];
+  var mgdL = mgStrings[0];
+  static String fixedPreMg = "🔁"; //↔
+  bool mgDLState = true; //default true = decrease by
+
+  static List<String> insensibleLosses = ["500", "1000"];
+  String? selectInsensible = "500";
 
   @override
   Widget build(BuildContext context) {
@@ -64,6 +77,7 @@ class _MyHomePageState extends State<MyHomePage> {
     // fast, so that you can just rebuild anything that needs updating rather
     // than having to individually change instances of widgets.
     var controller1;
+
     return Scaffold(
       appBar: AppBar(
         // Here we take the value from the MyHomePage object that was created by
@@ -72,7 +86,7 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
       body: SingleChildScrollView(
         child: Padding(
-          padding: EdgeInsets.all(16.0),
+          padding: const EdgeInsets.all(16.0),
           child: Center(
             // Center is a layout widget. It takes a single child and positions it
             // in the middle of the parent.
@@ -94,33 +108,137 @@ class _MyHomePageState extends State<MyHomePage> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 TextField(
-                  decoration: InputDecoration(labelText: 'Sodium (mEq/L)'),
+                  decoration: const InputDecoration(
+                    border: OutlineInputBorder(),
+                    labelText: 'Sodium (mEq/L)',
+                  ),
                   keyboardType: TextInputType.number,
-                  onChanged: (value) =>
-                      setState(() => _sodium = double.parse(value)),
+                  onChanged: (value) => setState(() {
+                    try {
+                      _sodium = double.parse(value);
+                    } catch (e) {
+                      _sodium = 0;
+                    }
+                    autoCalculate();
+                  }),
                 ),
-                SizedBox(height: 16.0),
+                const SizedBox(height: 16.0),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Expanded(
+                      flex: 3,
+                      child: TextField(
+                        decoration: InputDecoration(
+                          border: const OutlineInputBorder(),
+                          labelText: "${mgdL}",
+                        ),
+                        keyboardType: TextInputType.number,
+                        onChanged: (value) => setState(() {
+                          try {
+                            if (mgDLState) {
+                              _target = _sodium - double.parse(value);
+                            } else if (!mgDLState) {
+                              _target = double.parse(value);
+                            }
+                          } catch (e) {
+                            _target = 0;
+                          }
+                          autoCalculate();
+                        }),
+                      ),
+                    ),
+                    const SizedBox(width: 16.0),
+                    ElevatedButton(
+                        onPressed: () {
+                          mgDLState = !mgDLState;
+                          if (mgDLState) {
+                            mgdL = mgStrings[0];
+                          } else {
+                            mgdL = mgStrings[1];
+                          }
+
+                          setState(() {});
+                        },
+                        child: Padding(
+                          padding: const EdgeInsets.all(12.0),
+                          child: Text(fixedPreMg),
+                        ))
+                  ],
+                ),
+                const SizedBox(height: 16.0),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Expanded(
+                        flex: 1,
+                        child: RadioListTile(
+                          value: 'Male',
+                          groupValue: sex,
+                          title: const Text('Male'),
+                          onChanged: (value) => setState(() {
+                            sex = "Male";
+                            if (_selectedOption == "Child") {
+                              _ageType = 0.60;
+                            } else if (_selectedOption == "Adult") {
+                              _ageType = 0.60;
+                            } else if (_selectedOption == "Elderly") {
+                              _ageType = 0.50;
+                            }
+                            autoCalculate();
+                          }),
+                        )),
+                    Expanded(
+                        flex: 1,
+                        child: RadioListTile(
+                          value: 'Female',
+                          groupValue: sex,
+                          title: const Text('Female'),
+                          onChanged: (value) => setState(() {
+                            sex = "Female";
+                            if (_selectedOption == "Child") {
+                              _ageType = 0.60;
+                            } else if (_selectedOption == "Adult") {
+                              _ageType = 0.50;
+                            } else if (_selectedOption == "Elderly") {
+                              _ageType = 0.45;
+                            }
+                            autoCalculate();
+                          }),
+                        ))
+                  ],
+                ),
+                const SizedBox(height: 16.0),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Expanded(
                       flex: 1,
                       child: RadioListTile(
-                        value: 'Child',
-                        groupValue: _selectedOption,
-                        title: Text('Child'),
-                        onChanged: (value) =>
-                            setState(() => _selectedOption = value!),
-                      ),
+                          value: 'Child',
+                          groupValue: _selectedOption,
+                          title: const Text('Child'),
+                          onChanged: (value) => setState(() {
+                                _selectedOption = value!;
+                                _ageType = 0.60;
+                                autoCalculate();
+                              })),
                     ),
                     Expanded(
                       flex: 1,
                       child: RadioListTile(
                         value: 'Adult',
                         groupValue: _selectedOption,
-                        title: Text('Adult'),
-                        onChanged: (value) =>
-                            setState(() => _selectedOption = value!),
+                        title: const Text('Adult'),
+                        onChanged: (value) => setState(() {
+                          _selectedOption = value!;
+                          if (sex == "Male") {
+                            _ageType = 0.60;
+                          } else {
+                            _ageType = 0.50;
+                          }
+                          autoCalculate();
+                        }),
                       ),
                     ),
                     Expanded(
@@ -128,38 +246,83 @@ class _MyHomePageState extends State<MyHomePage> {
                       child: RadioListTile(
                         value: 'Elderly',
                         groupValue: _selectedOption,
-                        title: Text('Elderly'),
-                        onChanged: (value) =>
-                            setState(() => _selectedOption = value!),
+                        title: const Text('Elderly'),
+                        onChanged: (value) => setState(() {
+                          _selectedOption = value!;
+                          if (sex == "Male") {
+                            _ageType = 0.50;
+                          } else {
+                            _ageType = 0.45;
+                          }
+                          autoCalculate();
+                        }),
                       ),
                     ),
                   ],
                 ),
+                const SizedBox(
+                  height: 16,
+                ),
                 Text(_selectedOption != null
-                    ? 'Selected: $_selectedOption'
+                    ? 'Selected: $_selectedOption $_ageType'
                     : ''),
+                const SizedBox(
+                  height: 16,
+                ),
                 TextField(
-                  decoration: InputDecoration(labelText: 'Weight (kg)'),
+                  decoration: const InputDecoration(
+                    border: OutlineInputBorder(),
+                    labelText: 'Weight (kg)',
+                  ),
                   keyboardType: TextInputType.number,
-                  onChanged: (value) =>
-                      setState(() => weight = int.parse(value)),
+                  onChanged: (value) => setState(() {
+                    try {
+                      weight = int.parse(value);
+                    } catch (e) {
+                      weight = 0;
+                    }
+                    autoCalculate();
+                  }),
                 ),
-                SizedBox(height: 16.0),
-                TextField(
-                  decoration: InputDecoration(labelText: 'Target (mEq/L)'),
-                  keyboardType: TextInputType.number,
-                  onChanged: (value) =>
-                      setState(() => _target = double.parse(value)),
+                const SizedBox(height: 16.0),
+                Text(
+                  (_ivfRate != null && _ivfRate != '')
+                      ? 'Free water deficit: $_ivfRate'
+                      : 'Free water deficit: 0 / 0 x 0 x 0',
+                  style: TextStyle(fontSize: 20),
                 ),
-                SizedBox(height: 16.0),
-                ElevatedButton(
-                  child: Text('Calculate'),
-                  onPressed: () => setState(() => _ivfRate =
-                      calculateIVFRate(_sodium, weight, _target)
-                          .toStringAsFixed(2)),
+                const SizedBox(height: 16.0),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      "Insensible Losses: ",
+                      style: TextStyle(fontSize: 20),
+                    ),
+                    SizedBox(
+                      width: 100.0,
+                      child: DropdownButtonFormField(
+                          decoration:
+                              InputDecoration(border: OutlineInputBorder()),
+                          value: selectInsensible,
+                          items: insensibleLosses
+                              .map((item) => DropdownMenuItem<String>(
+                                  value: item,
+                                  child: Text(
+                                    "+ $item",
+                                    style: TextStyle(fontSize: 16),
+                                  )))
+                              .toList(),
+                          onChanged: (item) {
+                            setState(() {
+                              selectInsensible = item;
+                              autoCalculate();
+                            });
+                          }),
+                    ),
+                  ],
                 ),
-                SizedBox(height: 16.0),
-                Text(_ivfRate != null ? 'Free water deficit: $_ivfRate' : ''),
+                const SizedBox(height: 16.0),
               ],
             ),
           ),
@@ -167,10 +330,26 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
     );
   }
-}
 
-double calculateIVFRate(double sodium, int weight, double target) {
-  // Calculate IVF rate here using the provided sodium, age, and target values
-  // This is just a sample function and the actual calculation will depend on your specific requirements
-  return ((sodium - target) / target) * weight.toDouble() * 0.55.toDouble();
+  void autoCalculate() {
+    try {
+      _ivfRate = calculateIVFRate(_sodium, weight, _target, _ageType);
+    } catch (e) {}
+  }
+
+  String calculateIVFRate(
+      double sodium, int weight, double target, double ageType) {
+    var calculatedDiff = sodium - target;
+    var calcuStringFree = "$calculatedDiff / $sodium x $weight x $ageType";
+    var calcuResult =
+        (((sodium - target) / sodium) * weight.toDouble() * ageType * 1000);
+    calculatedFWD = calcuResult; //set global FWD
+    if (calcuResult != null && calcuResult != 0 && !calcuResult.isNaN) {
+      calcuStringFree += "\nCalculated FWD= " + calcuResult.toStringAsFixed(2);
+    }
+
+    // Calculate IVF rate here using the provided sodium, age, and target values
+    // This is just a sample function and the actual calculation will depend on your specific requirements
+    return calcuStringFree;
+  }
 }
