@@ -24,7 +24,7 @@ class MyApp extends StatelessWidget {
         // is not restarted.
         primarySwatch: Colors.blue,
       ),
-      home: const MyHomePage(title: 'IVF calculator - by Thomas Reyes'),
+      home: const MyHomePage(title: 'USTH Hypernatremia IVF calculator'),
     );
   }
 }
@@ -52,6 +52,8 @@ class _MyHomePageState extends State<MyHomePage> {
   int weight = 0;
   double _target = 0.00;
   String _ivfRate = '';
+  double sensibleLosses = 0.00;
+  double intake = 0.00;
 
   double calculatedFWD = 0.00;
 
@@ -62,11 +64,19 @@ class _MyHomePageState extends State<MyHomePage> {
 
   static List<String> mgStrings = ['⬇️ mg/dL', 'Target mg/dL'];
   var mgdL = mgStrings[0];
-  static String fixedPreMg = "🔁"; //↔
+  static String fixedPreMg = "🔁 Change"; //↔
   bool mgDLState = true; //default true = decrease by
 
   static List<String> insensibleLosses = ["500", "1000"];
   String? selectInsensible = "500";
+
+  var controllerFWD = TextEditingController();
+
+  @override
+  void dispose() {
+    controllerFWD.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -76,7 +86,6 @@ class _MyHomePageState extends State<MyHomePage> {
     // The Flutter framework has been optimized to make rerunning build methods
     // fast, so that you can just rebuild anything that needs updating rather
     // than having to individually change instances of widgets.
-    var controller1;
 
     return Scaffold(
       appBar: AppBar(
@@ -246,7 +255,8 @@ class _MyHomePageState extends State<MyHomePage> {
                       child: RadioListTile(
                         value: 'Elderly',
                         groupValue: _selectedOption,
-                        title: const Text('Elderly'),
+                        title: const Text('Elderly',
+                            style: TextStyle(fontSize: 12.0)),
                         onChanged: (value) => setState(() {
                           _selectedOption = value!;
                           if (sex == "Male") {
@@ -263,9 +273,9 @@ class _MyHomePageState extends State<MyHomePage> {
                 const SizedBox(
                   height: 16,
                 ),
-                Text(_selectedOption != null
-                    ? 'Selected: $_selectedOption $_ageType'
-                    : ''),
+                Text(_selectedOption != ""
+                    ? 'Selected: $_selectedOption ($_ageType) Estimated TBW'
+                    : 'Select Age : Estimated TBW'),
                 const SizedBox(
                   height: 16,
                 ),
@@ -288,41 +298,101 @@ class _MyHomePageState extends State<MyHomePage> {
                 Text(
                   (_ivfRate != null && _ivfRate != '')
                       ? 'Free water deficit: $_ivfRate'
-                      : 'Free water deficit: 0 / 0 x 0 x 0',
+                      : 'Free water deficit: 0/0 x Kg x TBW%',
                   style: TextStyle(fontSize: 20),
                 ),
                 const SizedBox(height: 16.0),
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text(
-                      "Insensible Losses: ",
-                      style: TextStyle(fontSize: 20),
+                    Expanded(
+                      child: TextField(
+                        decoration: const InputDecoration(
+                            border: OutlineInputBorder(),
+                            labelText: 'Calculated Free Water Deficit',
+                            prefixIcon: Icon(Icons.equalizer)),
+                        keyboardType: TextInputType.number,
+                        controller: controllerFWD,
+                        onChanged: (value) => setState(() {
+                          try {
+                            calculatedFWD = double.parse(value);
+                          } catch (e) {
+                            calculatedFWD = 0.00;
+                          }
+                        }),
+                      ),
                     ),
-                    SizedBox(
-                      width: 100.0,
-                      child: DropdownButtonFormField(
-                          decoration:
-                              InputDecoration(border: OutlineInputBorder()),
-                          value: selectInsensible,
-                          items: insensibleLosses
-                              .map((item) => DropdownMenuItem<String>(
-                                  value: item,
-                                  child: Text(
-                                    "+ $item",
-                                    style: TextStyle(fontSize: 16),
-                                  )))
-                              .toList(),
-                          onChanged: (item) {
-                            setState(() {
-                              selectInsensible = item;
-                              autoCalculate();
-                            });
-                          }),
+                    const SizedBox(
+                      width: 16.0,
                     ),
+                    ElevatedButton(
+                        onPressed: () => autoCalculate(),
+                        child: const Padding(
+                          padding: EdgeInsets.all(10.0),
+                          child: Text("🔁 Refresh"),
+                        ))
                   ],
                 ),
                 const SizedBox(height: 16.0),
+                //urine output
+                TextField(
+                  decoration: const InputDecoration(
+                      border: OutlineInputBorder(),
+                      labelText: 'Urine output (Sensible losses)',
+                      prefixIcon: Icon(Icons.add)),
+                  keyboardType: TextInputType.number,
+                  onChanged: (value) => setState(() {
+                    try {
+                      sensibleLosses = double.parse(value);
+                    } catch (e) {
+                      sensibleLosses = 0.00;
+                    }
+                  }),
+                ),
+                const SizedBox(height: 16.0),
+                DropdownButtonFormField(
+                    decoration: const InputDecoration(
+                        prefixIcon: Icon(Icons.add),
+                        labelText: "Insensible Losses",
+                        border: OutlineInputBorder()),
+                    value: selectInsensible,
+                    items: insensibleLosses
+                        .map((item) => DropdownMenuItem<String>(
+                            value: item,
+                            child: Text(
+                              item,
+                              style: const TextStyle(fontSize: 16),
+                            )))
+                        .toList(),
+                    onChanged: (item) {
+                      setState(() {
+                        selectInsensible = item;
+                      });
+                    }),
+                const SizedBox(height: 16.0),
+                //urine output
+                TextField(
+                  decoration: const InputDecoration(
+                      border: OutlineInputBorder(),
+                      labelText: 'Fluid Intake',
+                      prefixIcon: Icon(Icons.remove)),
+                  keyboardType: TextInputType.number,
+                  onChanged: (value) => setState(() {
+                    try {
+                      intake = double.parse(value);
+                    } catch (e) {
+                      intake = 0.00;
+                    }
+                  }),
+                ),
+                // horizontal line
+                const SizedBox(height: 16.0),
+                Container(
+                  height: 1,
+                  color: Colors.grey,
+                ),
+                const SizedBox(height: 16.0),
+                // Intake
+                Text("Total: ")
               ],
             ),
           ),
@@ -340,12 +410,14 @@ class _MyHomePageState extends State<MyHomePage> {
   String calculateIVFRate(
       double sodium, int weight, double target, double ageType) {
     var calculatedDiff = sodium - target;
-    var calcuStringFree = "$calculatedDiff / $sodium x $weight x $ageType";
+    var calcuStringFree = "$calculatedDiff/$sodium x $weight x $ageType";
     var calcuResult =
         (((sodium - target) / sodium) * weight.toDouble() * ageType * 1000);
     calculatedFWD = calcuResult; //set global FWD
+
     if (calcuResult != null && calcuResult != 0 && !calcuResult.isNaN) {
-      calcuStringFree += "\nCalculated FWD= " + calcuResult.toStringAsFixed(2);
+      controllerFWD.text = calculatedFWD.toStringAsFixed(2);
+      //calcuStringFree += "\nCalculated FWD= ${calcuResult.toStringAsFixed(2)}";
     }
 
     // Calculate IVF rate here using the provided sodium, age, and target values
