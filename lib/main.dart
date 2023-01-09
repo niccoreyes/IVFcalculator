@@ -55,6 +55,8 @@ class _MyHomePageState extends State<MyHomePage> {
   double sensibleLosses = 0.00;
   double intake = 0.00;
 
+  double totalIVF = 0.00;
+
   double calculatedFWD = 0.00;
 
   String sex = 'Male';
@@ -69,9 +71,11 @@ class _MyHomePageState extends State<MyHomePage> {
 
   static List<String> insensibleLosses = ["500", "1000"];
   String? selectInsensible = "500";
+  double insensibleVal = 500.00;
 
   var controllerFWD = TextEditingController();
-
+  var controllerTotal = TextEditingController();
+  var mgDlController = TextEditingController();
   @override
   void dispose() {
     controllerFWD.dispose();
@@ -88,11 +92,6 @@ class _MyHomePageState extends State<MyHomePage> {
     // than having to individually change instances of widgets.
 
     return Scaffold(
-      appBar: AppBar(
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
-        title: Text(widget.title),
-      ),
       body: Padding(
         padding: const EdgeInsets.all(10.0),
         child: ListView(
@@ -111,6 +110,7 @@ class _MyHomePageState extends State<MyHomePage> {
           // axis because Columns are vertical (the cross axis would be
           // horizontal).
           children: [
+            const SizedBox(height: 16.0),
             TextField(
               decoration: const InputDecoration(
                 border: OutlineInputBorder(),
@@ -137,19 +137,13 @@ class _MyHomePageState extends State<MyHomePage> {
                       border: const OutlineInputBorder(),
                       labelText: "${mgdL}",
                     ),
+                    controller: mgDlController,
                     keyboardType: TextInputType.number,
-                    onChanged: (value) => setState(() {
-                      try {
-                        if (mgDLState) {
-                          _target = _sodium - double.parse(value);
-                        } else if (!mgDLState) {
-                          _target = double.parse(value);
-                        }
-                      } catch (e) {
-                        _target = 0;
-                      }
-                      autoCalculate();
-                    }),
+                    onChanged: (value) {
+                      setState(() {
+                        mgDlProcess();
+                      });
+                    },
                   ),
                 ),
                 const SizedBox(width: 16.0),
@@ -158,11 +152,18 @@ class _MyHomePageState extends State<MyHomePage> {
                       mgDLState = !mgDLState;
                       if (mgDLState) {
                         mgdL = mgStrings[0];
+                        if (_target != 0 && _sodium != 0) {
+                          mgDlController.text = (_sodium - _target).toString();
+                        }
                       } else {
                         mgdL = mgStrings[1];
+                        if (_target != 0 && _sodium != 0) {
+                          mgDlController.text = (_target).toString();
+                        }
                       }
-
-                      setState(() {});
+                      setState(() {
+                        mgDlProcess();
+                      });
                     },
                     child: Padding(
                       padding: const EdgeInsets.all(12.0),
@@ -289,12 +290,18 @@ class _MyHomePageState extends State<MyHomePage> {
                 autoCalculate();
               }),
             ),
+            // horizontal line
+            const SizedBox(height: 16.0),
+            Container(
+              height: 1,
+              color: Colors.grey,
+            ),
             const SizedBox(height: 16.0),
             Text(
               (_ivfRate != null && _ivfRate != '')
                   ? 'Free water deficit: $_ivfRate'
                   : 'Free water deficit: 0/0 x Kg x TBW%',
-              style: TextStyle(fontSize: 20),
+              style: const TextStyle(fontSize: 20),
             ),
             const SizedBox(height: 16.0),
             Row(
@@ -313,6 +320,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       } catch (e) {
                         calculatedFWD = 0.00;
                       }
+                      totalSum();
                     }),
                   ),
                 ),
@@ -341,6 +349,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 } catch (e) {
                   sensibleLosses = 0.00;
                 }
+                totalSum();
               }),
             ),
             const SizedBox(height: 16.0),
@@ -361,6 +370,12 @@ class _MyHomePageState extends State<MyHomePage> {
                 onChanged: (item) {
                   setState(() {
                     selectInsensible = item;
+                    if (selectInsensible != null) {
+                      try {
+                        insensibleVal = double.parse(selectInsensible!);
+                      } catch (e) {}
+                      totalSum();
+                    }
                   });
                 }),
             const SizedBox(height: 16.0),
@@ -371,13 +386,16 @@ class _MyHomePageState extends State<MyHomePage> {
                   labelText: 'Fluid Intake',
                   prefixIcon: Icon(Icons.remove)),
               keyboardType: TextInputType.number,
-              onChanged: (value) => setState(() {
-                try {
-                  intake = double.parse(value);
-                } catch (e) {
-                  intake = 0.00;
-                }
-              }),
+              onChanged: (value) {
+                setState(() {
+                  try {
+                    intake = double.parse(value);
+                  } catch (e) {
+                    intake = 0.00;
+                  }
+                  totalSum();
+                });
+              },
             ),
             // horizontal line
             const SizedBox(height: 16.0),
@@ -387,11 +405,81 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
             const SizedBox(height: 16.0),
             // Intake
-            Text("Total: ")
+            Row(
+              children: [
+                Expanded(
+                  child: TextField(
+                    decoration: const InputDecoration(
+                        border: OutlineInputBorder(),
+                        labelText: 'Total IVF Fluids',
+                        prefixIcon: Icon(Icons.data_exploration)),
+                    keyboardType: TextInputType.number,
+                    controller: controllerTotal,
+                    onChanged: (value) => setState(() {
+                      try {
+                        totalIVF = double.parse(value);
+                      } catch (e) {
+                        totalIVF = 0.00;
+                      }
+                    }),
+                  ),
+                ),
+                const SizedBox(
+                  width: 16.0,
+                ),
+                ElevatedButton(
+                    onPressed: () => autoCalculate(),
+                    child: const Padding(
+                      padding: EdgeInsets.all(10.0),
+                      child: Text("🔁 Refresh"),
+                    ))
+              ],
+            ),
+            // horizontal line
+            const SizedBox(height: 16.0),
+            Container(
+              height: 1,
+              color: Colors.grey,
+            ),
+            const SizedBox(
+              height: 16,
+            ),
+            Row(
+              children: [
+                Text(
+                    "D5W ➡️ ${(totalIVF / 2).toStringAsFixed(0)} / 24 \n= ${(totalIVF / 2 / 24).toStringAsFixed(0)} cc",
+                    style: const TextStyle(fontSize: 20))
+              ],
+            ),
+            // horizontal line
+            const SizedBox(height: 16.0),
+            Container(
+              height: 1,
+              color: Colors.grey,
+            ),
+            const SizedBox(
+              height: 16,
+            ),
+            Row(
+              children: [
+                Text(
+                  "FLUSHING ➡️ ${(totalIVF / 2).toStringAsFixed(0)} / 6 \n= ${(totalIVF / 2 / 6).toStringAsFixed(0)} cc",
+                  style: const TextStyle(fontSize: 20),
+                )
+              ],
+            ),
+            const SizedBox(
+              height: 50,
+            )
           ],
         ),
       ),
     );
+  }
+
+  void totalSum() {
+    totalIVF = calculatedFWD + sensibleLosses + insensibleVal - intake;
+    controllerTotal.text = totalIVF.toStringAsFixed(2);
   }
 
   void autoCalculate() {
@@ -416,5 +504,18 @@ class _MyHomePageState extends State<MyHomePage> {
     // Calculate IVF rate here using the provided sodium, age, and target values
     // This is just a sample function and the actual calculation will depend on your specific requirements
     return calcuStringFree;
+  }
+
+  void mgDlProcess() {
+    try {
+      if (mgDLState) {
+        _target = _sodium - double.parse(mgDlController.text);
+      } else if (!mgDLState) {
+        _target = double.parse(mgDlController.text);
+      }
+    } catch (e) {
+      _target = 0;
+    }
+    autoCalculate();
   }
 }
