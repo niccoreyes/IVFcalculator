@@ -471,7 +471,7 @@ class _MyHomePageState extends State<MyHomePage> {
             const SizedBox(
               height: 50,
             ),
-            Text(
+            const Text(
                 "I am grateful to everyone who contributed to making this project possible. Special thanks to Dr. Danielle Lucero for her guidance. I hope this tool will hasten IVF calculation correction for patients in USTH.\n - Thomas Reyes")
           ],
         ),
