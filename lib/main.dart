@@ -76,6 +76,10 @@ class _MyHomePageState extends State<MyHomePage> {
   var controllerFWD = TextEditingController();
   var controllerTotal = TextEditingController();
   var mgDlController = TextEditingController();
+
+  double d5WvsPush = 0.5;
+  String d5WvPushLabel = '1/2';
+
   @override
   void dispose() {
     controllerFWD.dispose();
@@ -435,6 +439,57 @@ class _MyHomePageState extends State<MyHomePage> {
                     ))
               ],
             ),
+            const SizedBox(height: 20.0),
+            Row(
+              children: [
+                Text(
+                  "FLUSH",
+                  style: TextStyle(fontSize: 20),
+                ),
+                Expanded(
+                  flex: 1,
+                  child: SliderTheme(
+                    data: const SliderThemeData(
+                      trackHeight: 4,
+                      thumbShape: RoundSliderThumbShape(enabledThumbRadius: 12),
+                      overlayShape: RoundSliderOverlayShape(overlayRadius: 28),
+                      tickMarkShape:
+                          RoundSliderTickMarkShape(tickMarkRadius: 4),
+                    ),
+                    child: Slider(
+                      min: 0,
+                      max: 1.0,
+                      divisions: 4,
+                      value: d5WvsPush,
+                      label: d5WvPushLabel,
+                      onChanged: (value) {
+                        if (value == 0) {
+                          d5WvPushLabel = "FLUSH";
+                        } else if (value == 0.25) {
+                          d5WvPushLabel = "D5W 1/4";
+                        } else if (value == 0.5) {
+                          d5WvPushLabel = "1/2";
+                        } else if (value == 0.75) {
+                          d5WvPushLabel = "FLUSH 1/4";
+                        } else {
+                          d5WvPushLabel = "D5W 1";
+                        }
+                        setState(() {
+                          d5WvsPush = value;
+                        });
+                        // Update the value shown in the text field
+                      },
+                    ),
+                  ),
+                ),
+                Text(
+                  "D5W",
+                  style: TextStyle(fontSize: 20),
+                ),
+              ],
+            ),
+            const SizedBox(height: 20.0),
+
             // horizontal line
             const SizedBox(height: 16.0),
             Container(
@@ -447,7 +502,7 @@ class _MyHomePageState extends State<MyHomePage> {
             Row(
               children: [
                 Text(
-                    "D5W ➡️ ${(totalIVF / 2).toStringAsFixed(0)} / 24 \n= ${(totalIVF / 2 / 24).toStringAsFixed(0)} cc",
+                    "D5W ➡️ ${(totalIVF * d5WvsPush).toStringAsFixed(0)} / 24 \n= ${(totalIVF * d5WvsPush / 24).toStringAsFixed(0)} cc",
                     style: const TextStyle(fontSize: 20))
               ],
             ),
@@ -463,7 +518,7 @@ class _MyHomePageState extends State<MyHomePage> {
             Row(
               children: [
                 Text(
-                  "FLUSHING ➡️ ${(totalIVF / 2).toStringAsFixed(0)} / 6 \n= ${(totalIVF / 2 / 6).toStringAsFixed(0)} cc",
+                  "FLUSHING ➡️ ${(totalIVF * (1 - d5WvsPush)).toStringAsFixed(0)} / 6 \n= ${(totalIVF * (1 - d5WvsPush) / 6).toStringAsFixed(0)} cc",
                   style: const TextStyle(fontSize: 20),
                 )
               ],
