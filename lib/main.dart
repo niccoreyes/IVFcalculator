@@ -335,12 +335,12 @@ class _MyHomePageState extends State<MyHomePage> {
                 const SizedBox(
                   width: 16.0,
                 ),
-                ElevatedButton(
-                    onPressed: () => autoCalculate(),
-                    child: const Padding(
-                      padding: EdgeInsets.all(10.0),
-                      child: Text("🔁 Refresh"),
-                    ))
+                // ElevatedButton(
+                //     onPressed: () => autoCalculate(),
+                //     child: const Padding(
+                //       padding: EdgeInsets.all(10.0),
+                //       child: Text("🔁 Refresh"),
+                //     ))
               ],
             ),
             const SizedBox(height: 16.0),
@@ -438,12 +438,12 @@ class _MyHomePageState extends State<MyHomePage> {
                 const SizedBox(
                   width: 16.0,
                 ),
-                ElevatedButton(
-                    onPressed: () => autoCalculate(),
-                    child: const Padding(
-                      padding: EdgeInsets.all(10.0),
-                      child: Text("🔁 Refresh"),
-                    ))
+                // ElevatedButton(
+                //     onPressed: () => autoCalculate(),
+                //     child: const Padding(
+                //       padding: EdgeInsets.all(10.0),
+                //       child: Text("🔁 Refresh"),
+                //     ))
               ],
             ),
             const SizedBox(height: 20.0),
@@ -546,105 +546,108 @@ class _MyHomePageState extends State<MyHomePage> {
             const SizedBox(
               height: 5,
             ),
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.start,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Column(
-                  children: [
-                    Row(
-                      children: [
-                        Column(
-                          children: [
-                            Text("${_sodium - _target}"),
-                            Container(
-                              constraints: const BoxConstraints(
-                                minWidth: 10,
-                                maxWidth: 12,
-                              ),
-                              height: 1,
-                              color: Colors.grey,
-                            ),
-                            Text("$_sodium")
-                          ],
-                        ),
-                        Text("x $weight x $_ageType = ")
-                      ],
-                    )
-                  ],
-                ),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Container(
-                      height: 30,
-                      child: Center(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(calculatedFWD.toStringAsFixed(0)),
-                          ],
-                        ),
-                      ),
-                    ),
-                    Text("+ $sensibleLosses"),
-                    Text("+ $insensibleVal"),
-                    Text("- $intake"),
-                    Container(
-                      constraints: const BoxConstraints(
-                        minWidth: 10,
-                        maxWidth: 70,
-                      ),
-                      height: 1,
-                      color: Colors.grey,
-                    ),
-                    Row(
-                      children: [
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text("Total IVF: ${totalIVF.toStringAsFixed(0)}  "),
-                          ],
-                        ),
-                        Column(
-                          children: [
-                            Container(
-                              width: 25,
-                              height: 25,
-                              clipBehavior: Clip.antiAlias,
-                              decoration: const BoxDecoration(
-                                  color: Colors.transparent),
-                              child: ClipPath(
-                                clipper: VShapeClipper(),
-                                child: Container(
-                                  decoration:
-                                      const BoxDecoration(color: Colors.black),
+            SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Column(
+                    children: [
+                      Row(
+                        children: [
+                          Column(
+                            children: [
+                              Text("${_sodium - _target}"),
+                              Container(
+                                constraints: const BoxConstraints(
+                                  minWidth: 10,
+                                  maxWidth: 12,
                                 ),
+                                height: 1,
+                                color: Colors.grey,
                               ),
-                            )
-                          ],
+                              Text("$_sodium")
+                            ],
+                          ),
+                          Text("x $weight x $_ageType = ")
+                        ],
+                      )
+                    ],
+                  ),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Container(
+                        height: 30,
+                        child: Center(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(calculatedFWD.toStringAsFixed(0)),
+                            ],
+                          ),
                         ),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(
-                                "${(totalIVF * d5WvsPush).toStringAsFixed(0)} / 24 = D5W ${(totalIVF * d5WvsPush / 24).toStringAsFixed(0)} cc"),
-                            Text(
-                                "${(totalIVF * (1 - d5WvsPush)).toStringAsFixed(0)} / 6 = Flushing ${(totalIVF * (1 - d5WvsPush) / 6).toStringAsFixed(0)} cc")
-                          ],
-                        )
-                      ],
-                    ),
-                  ],
-                ),
-                Column()
-              ],
+                      ),
+                      Text("+ $sensibleLosses"),
+                      Text("+ $insensibleVal"),
+                      Text("- $intake"),
+                      Container(
+                        constraints: const BoxConstraints(
+                          minWidth: 10,
+                          maxWidth: 70,
+                        ),
+                        height: 1,
+                        color: Colors.grey,
+                      ),
+                      Row(
+                        children: [
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                  "Total IVF: ${totalIVF.toStringAsFixed(0)}  "),
+                            ],
+                          ),
+                          Column(
+                            children: [
+                              Container(
+                                width: 25,
+                                height: 25,
+                                clipBehavior: Clip.antiAlias,
+                                decoration: const BoxDecoration(
+                                    color: Colors.transparent),
+                                child: ClipPath(
+                                  clipper: VShapeClipper(),
+                                  child: Container(
+                                    decoration: const BoxDecoration(
+                                        color: Colors.black),
+                                  ),
+                                ),
+                              )
+                            ],
+                          ),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                  "${(totalIVF * d5WvsPush).toStringAsFixed(0)} / 24 = D5W ${(totalIVF * d5WvsPush / 24).toStringAsFixed(0)} cc"),
+                              Text(
+                                  "${(totalIVF * (1 - d5WvsPush)).toStringAsFixed(0)} / 6 = Flushing ${(totalIVF * (1 - d5WvsPush) / 6).toStringAsFixed(0)} cc")
+                            ],
+                          )
+                        ],
+                      ),
+                    ],
+                  ),
+                ],
+              ),
             ),
 
             // horizontal line
