@@ -12572,7 +12572,7 @@ afW:function afW(){},
 BN:function BN(){},
 JE(a,b,c,d,e){var s,r=null
 if(a!=null)s=a.a.a
-else s=c
+else s=c==null?"":c
 return new A.xS(a,r,new A.a7K(b,e,r,r,d,r,r,r,B.b0,r,r,B.lK,!1,r,!1,r,"\u2022",!1,!0,r,r,!0,r,1,r,!1,r,r,r,r,r,r,r,2,r,r,r,B.hy,r,r,r,r,r,r,r,!0,r,A.aCm()),s,!0,B.mv,r,r)},
 axJ(a,b){return A.ald(b)},
 xS:function xS(a,b,c,d,e,f,g,h){var _=this
@@ -21471,13 +21471,13 @@ _.as=""
 _.at=0
 _.ax=a
 _.ay=!0
-_.ch="500"
-_.CW=500
-_.cx=b
-_.cy=c
-_.db=d
-_.dx=0.5
-_.dy="1/2"
+_.CW="500"
+_.cx=500
+_.cy=b
+_.db=c
+_.dx=d
+_.dy=0.5
+_.fr="1/2"
 _.a=null
 _.b=e
 _.c=null},
@@ -73027,19 +73027,17 @@ L(a){return new A.vF(B.Lm,"USTH Hypernatremia IVF calculator",A.ao5(null,B.ir,nu
 A.vU.prototype={
 am(){return new A.Nw($.aow[0],A.a7E(null),A.a7E(null),A.a7E(null),B.j)}}
 A.Nw.prototype={
-l(){this.cx.l()
-this.aL()},
+l(){this.aL()},
 L(a6){var s,r,q,p,o,n,m,l,k,j,i,h,g,f,e,d,c,b,a,a0,a1,a2,a3=this,a4=null,a5=a3.d
 a5=a5===0?"":B.d.S(a5,2)
 a5=A.JE(a4,B.C9,a5,B.cl,new A.acS(a3))
-s=a3.ax
-r=t.F
-s=A.fc(A.a([A.kG(A.JE(a3.db,A.amm(a4,B.bP,a4,a4,a4,a4,a4,a4,!0,a4,a4,a4,a4,a4,a4,a4,a4,a4,a4,a4,a4,a4,a4,a4,a4,a4,a4,a4,a4,a4,a4,a4,!1,a4,a4,a4,s,a4,a4,a4,a4,a4,a4,a4,a4,a4,a4,a4,a4,a4),s,B.cl,new A.acT(a3)),3),B.lH,new A.EK(new A.acU(a3),a4,a4,a4,a4,B.q,a4,!1,a4,new A.dr(B.nw,A.cV("\ud83d\udd01 Change",a4,a4,a4,a4,a4,a4),a4),a4)],r),B.a0,B.cA,B.a5)
+s=t.F
+r=A.fc(A.a([A.kG(A.JE(a3.dx,A.amm(a4,B.bP,a4,a4,a4,a4,a4,a4,!0,a4,a4,a4,a4,a4,a4,a4,a4,a4,a4,a4,a4,a4,a4,a4,a4,a4,a4,a4,a4,a4,a4,a4,!1,a4,a4,a4,a3.ax,a4,a4,a4,a4,a4,a4,a4,a4,a4,a4,a4,a4,a4),a4,B.cl,new A.acT(a3)),3),B.lH,new A.EK(new A.acU(a3),a4,a4,a4,a4,B.q,a4,!1,a4,new A.dr(B.nw,A.cV("\ud83d\udd01 Change",a4,a4,a4,a4,a4,a4),a4),a4)],s),B.a0,B.cA,B.a5)
 q=a3.Q
 p=t.N
-q=A.fc(A.a([A.kG(A.Hy(q,new A.ad_(a3),B.U1,"Male",p),1),A.kG(A.Hy(q,new A.ad0(a3),B.TZ,"Female",p),1)],r),B.a0,B.cA,B.a5)
+q=A.fc(A.a([A.kG(A.Hy(q,new A.ad_(a3),B.U1,"Male",p),1),A.kG(A.Hy(q,new A.ad0(a3),B.TZ,"Female",p),1)],s),B.a0,B.cA,B.a5)
 o=a3.as
-o=A.fc(A.a([A.kG(A.Hy(o,new A.ad1(a3),B.U0,"Child",p),1),A.kG(A.Hy(o,new A.ad2(a3),B.U5,"Adult",p),1),A.kG(A.Hy(o,new A.ad3(a3),B.U2,"Elderly",p),1)],r),B.a0,B.cA,B.a5)
+o=A.fc(A.a([A.kG(A.Hy(o,new A.ad1(a3),B.U0,"Child",p),1),A.kG(A.Hy(o,new A.ad2(a3),B.U5,"Adult",p),1),A.kG(A.Hy(o,new A.ad3(a3),B.U2,"Elderly",p),1)],s),B.a0,B.cA,B.a5)
 n=a3.as
 n=A.cV(n!==""?"Selected: "+n+" ("+A.h(a3.at)+") Estimated TBW":"Select Age : Estimated TBW",a4,a4,a4,a4,a4,a4)
 m=a3.e
@@ -73048,11 +73046,11 @@ m=A.JE(a4,B.C4,m,B.cl,new A.ad4(a3))
 l=A.dD(a4,a4,B.q,B.bN,a4,a4,1,a4,a4,a4)
 k=a3.r
 k=A.cV(k!==""?"Free water deficit: "+k:"Free water deficit: 0/0 x Kg x TBW%",a4,a4,a4,B.ef,a4,a4)
-j=A.fc(A.a([A.kG(A.ajw(!0,B.bM,!1,a4,A.aqH(),a3.cx,a4,a4,a4,2,B.C6,!0,a4,!0,a4,!1,a4,a4,a4,B.cl,a4,a4,1,a4,a4,!1,"\u2022",new A.ad5(a3),a4,a4,a4,a4,!1,a4,a4,B.hy,a4,a4,a4,a4,a4,a4,a4,B.b0,a4,B.lK,a4,a4,a4),1),B.lH],r),B.a0,B.am,B.a5)
+j=A.fc(A.a([A.kG(A.ajw(!0,B.bM,!1,a4,A.aqH(),a3.cy,a4,a4,a4,2,B.C6,!0,a4,!0,a4,!1,a4,a4,a4,B.cl,a4,a4,1,a4,a4,!1,"\u2022",new A.ad5(a3),a4,a4,a4,a4,!1,a4,a4,B.hy,a4,a4,a4,a4,a4,a4,a4,B.b0,a4,B.lK,a4,a4,a4),1),B.lH],s),B.a0,B.am,B.a5)
 i=a3.w
 i=i===0?"":B.d.k(i)
 i=A.JE(a4,B.Ca,i,B.cl,new A.ad6(a3))
-h=a3.ch
+h=a3.CW
 g=$.ayC
 f=A.aa(g).i("ao<1,j6<x>>")
 p=A.auD(B.C5,A.aB(new A.ao(g,new A.acV(),f),!0,f.i("bv.E")),new A.acW(a3),h,p)
@@ -73060,19 +73058,19 @@ h=a3.x
 h=h===0?"":B.d.k(h)
 h=A.JE(a4,B.C7,h,B.cl,new A.acX(a3))
 g=A.dD(a4,a4,B.q,B.bN,a4,a4,1,a4,a4,a4)
-f=A.fc(A.a([A.kG(A.ajw(!0,B.bM,!1,a4,A.aqH(),a3.cy,a4,a4,a4,2,B.C8,!0,a4,!0,a4,!1,a4,a4,a4,B.cl,a4,a4,1,a4,a4,!1,"\u2022",new A.acY(a3),a4,a4,a4,a4,!1,a4,a4,B.hy,a4,a4,a4,a4,a4,a4,a4,B.b0,a4,B.lK,a4,a4,a4),1),B.lH],r),B.a0,B.am,B.a5)
-e=A.fc(A.a([B.U4,A.kG(A.anM(new A.xs(a3.dx,new A.acZ(a3),0,1,4,a3.dy,a4),B.Q1),1),B.U3],r),B.a0,B.am,B.a5)
+f=A.fc(A.a([A.kG(A.ajw(!0,B.bM,!1,a4,A.aqH(),a3.db,a4,a4,a4,2,B.C8,!0,a4,!0,a4,!1,a4,a4,a4,B.cl,a4,a4,1,a4,a4,!1,"\u2022",new A.acY(a3),a4,a4,a4,a4,!1,a4,a4,B.hy,a4,a4,a4,a4,a4,a4,a4,B.b0,a4,B.lK,a4,a4,a4),1),B.lH],s),B.a0,B.am,B.a5)
+e=A.fc(A.a([B.U4,A.kG(A.anM(new A.xs(a3.dy,new A.acZ(a3),0,1,4,a3.fr,a4),B.Q1),1),B.U3],s),B.a0,B.am,B.a5)
 d=A.dD(a4,a4,B.q,B.bN,a4,a4,1,a4,a4,a4)
-c=A.fc(A.a([A.cV("D5W \u27a1\ufe0f "+B.d.S(a3.y*a3.dx,0)+" / 24 \n= "+B.d.S(a3.y*a3.dx/24,0)+" cc",a4,a4,a4,B.ef,a4,a4)],r),B.a0,B.am,B.a5)
+c=A.fc(A.a([A.cV("D5W \u27a1\ufe0f "+B.d.S(a3.y*a3.dy,0)+" / 24 \n= "+B.d.S(a3.y*a3.dy/24,0)+" cc",a4,a4,a4,B.ef,a4,a4)],s),B.a0,B.am,B.a5)
 b=A.dD(a4,a4,B.q,B.bN,a4,a4,1,a4,a4,a4)
-a=A.fc(A.a([A.cV("FLUSHING \u27a1\ufe0f "+B.d.S(a3.y*(1-a3.dx),0)+" / 6 \n= "+B.d.S(a3.y*(1-a3.dx)/6,0)+" cc",a4,a4,a4,B.ef,a4,a4)],r),B.a0,B.am,B.a5)
+a=A.fc(A.a([A.cV("FLUSHING \u27a1\ufe0f "+B.d.S(a3.y*(1-a3.dy),0)+" / 6 \n= "+B.d.S(a3.y*(1-a3.dy)/6,0)+" cc",a4,a4,a4,B.ef,a4,a4)],s),B.a0,B.am,B.a5)
 a0=A.dD(a4,a4,B.q,B.bN,a4,a4,1,a4,a4,a4)
 a1=A.fc(B.EC,B.a0,B.am,B.a5)
 a2=a3.d
-return new A.x1(new A.dr(B.Bj,A.amz(A.a([B.Q,a5,B.Q,s,B.Q,q,B.Q,o,B.Q,n,B.Q,m,B.Q,l,B.Q,k,B.Q,j,B.Q,i,B.Q,p,B.Q,h,B.Q,g,B.Q,f,B.wM,e,B.wM,B.Q,d,B.Q,c,B.Q,b,B.Q,a,B.Q,a0,B.Q,a1,B.Q0,new A.IS(B.aH,A.fc(A.a([A.kv(A.a([A.fc(A.a([A.kv(A.a([A.cV(A.h(a2-a3.f),a4,a4,a4,a4,a4,a4),A.dD(a4,a4,B.q,B.bN,B.yg,a4,1,a4,a4,a4),A.cV(A.h(a2),a4,a4,a4,a4,a4,a4)],r),B.a0,B.am,B.a5),A.cV("x "+a3.e+" x "+A.h(a3.at)+" = ",a4,a4,a4,a4,a4,a4)],r),B.a0,B.am,B.a5)],r),B.a0,B.am,B.a5),A.kv(A.a([A.dD(a4,A.CT(A.kv(A.a([A.cV(B.d.S(a3.z,0),a4,a4,a4,a4,a4,a4)],r),B.cv,B.cA,B.a5),a4,a4),B.q,a4,a4,a4,30,a4,a4,a4),A.cV("+ "+A.h(a3.w),a4,a4,a4,a4,a4,a4),A.cV("+ "+A.h(a3.CW),a4,a4,a4,a4,a4,a4),A.cV("- "+A.h(a3.x),a4,a4,a4,a4,a4,a4),A.dD(a4,a4,B.q,B.bN,B.yh,a4,1,a4,a4,a4),A.fc(A.a([A.kv(A.a([A.cV("Total IVF: "+B.d.S(a3.y,0)+"  ",a4,a4,a4,a4,a4,a4)],r),B.a0,B.cA,B.a5),A.kv(A.a([A.dD(a4,A.Dq(A.dD(a4,a4,B.q,a4,a4,B.yj,a4,a4,a4,a4),B.bE,new A.K9()),B.bE,a4,a4,B.yk,25,a4,a4,25)],r),B.a0,B.am,B.a5),A.kv(A.a([A.cV(B.d.S(a3.y*a3.dx,0)+" / 24 = D5W "+B.d.S(a3.y*a3.dx/24,0)+" cc",a4,a4,a4,a4,a4,a4),A.cV(B.d.S(a3.y*(1-a3.dx),0)+" / 6 = Flushing "+B.d.S(a3.y*(1-a3.dx)/6,0)+" cc",a4,a4,a4,a4,a4,a4)],r),B.cv,B.cA,B.a5)],r),B.a0,B.am,B.a5)],r),B.cv,B.am,B.cB)],r),B.cv,B.am,B.cB),a4),B.Q,A.dD(a4,a4,B.q,B.bN,a4,a4,1,a4,a4,a4),B.Q,B.Q_,B.U6],r),a4,a4,!1),a4),a4)},
-wB(){var s=this,r=s.z+s.w+s.CW-s.x
+return new A.x1(new A.dr(B.Bj,A.amz(A.a([B.Q,a5,B.Q,r,B.Q,q,B.Q,o,B.Q,n,B.Q,m,B.Q,l,B.Q,k,B.Q,j,B.Q,i,B.Q,p,B.Q,h,B.Q,g,B.Q,f,B.wM,e,B.wM,B.Q,d,B.Q,c,B.Q,b,B.Q,a,B.Q,a0,B.Q,a1,B.Q0,new A.IS(B.aH,A.fc(A.a([A.kv(A.a([A.fc(A.a([A.kv(A.a([A.cV(A.h(a2-a3.f),a4,a4,a4,a4,a4,a4),A.dD(a4,a4,B.q,B.bN,B.yg,a4,1,a4,a4,a4),A.cV(A.h(a2),a4,a4,a4,a4,a4,a4)],s),B.a0,B.am,B.a5),A.cV("x "+a3.e+" x "+A.h(a3.at)+" = ",a4,a4,a4,a4,a4,a4)],s),B.a0,B.am,B.a5)],s),B.a0,B.am,B.a5),A.kv(A.a([A.dD(a4,A.CT(A.kv(A.a([A.cV(B.d.S(a3.z,0),a4,a4,a4,a4,a4,a4)],s),B.cv,B.cA,B.a5),a4,a4),B.q,a4,a4,a4,30,a4,a4,a4),A.cV("+ "+A.h(a3.w),a4,a4,a4,a4,a4,a4),A.cV("+ "+A.h(a3.cx),a4,a4,a4,a4,a4,a4),A.cV("- "+A.h(a3.x),a4,a4,a4,a4,a4,a4),A.dD(a4,a4,B.q,B.bN,B.yh,a4,1,a4,a4,a4),A.fc(A.a([A.kv(A.a([A.cV("Total IVF: "+B.d.S(a3.y,0)+"  ",a4,a4,a4,a4,a4,a4)],s),B.a0,B.cA,B.a5),A.kv(A.a([A.dD(a4,A.Dq(A.dD(a4,a4,B.q,a4,a4,B.yj,a4,a4,a4,a4),B.bE,new A.K9()),B.bE,a4,a4,B.yk,25,a4,a4,25)],s),B.a0,B.am,B.a5),A.kv(A.a([A.cV(B.d.S(a3.y*a3.dy,0)+" / 24 = D5W "+B.d.S(a3.y*a3.dy/24,0)+" cc",a4,a4,a4,a4,a4,a4),A.cV(B.d.S(a3.y*(1-a3.dy),0)+" / 6 = FLUSH "+B.d.S(a3.y*(1-a3.dy)/6,0)+" cc",a4,a4,a4,a4,a4,a4)],s),B.cv,B.cA,B.a5)],s),B.a0,B.am,B.a5)],s),B.cv,B.am,B.cB)],s),B.cv,B.am,B.cB),a4),B.Q,A.dD(a4,a4,B.q,B.bN,a4,a4,1,a4,a4,a4),B.Q,B.Q_,B.U6],s),a4,a4,!1),a4),a4)},
+wB(){var s=this,r=s.z+s.w+s.cx-s.x
 s.y=r
-s.cy.sev(0,B.d.S(r,2))},
+s.db.sev(0,B.d.S(r,2))},
 ki(){var s,r,q,p,o,n,m,l=this
 try{s=l.d
 r=l.e
@@ -73080,11 +73078,12 @@ q=l.f
 p=l.at
 o=s-q
 n=l.z=o/s*r*p*1000
-if(n!==0&&!isNaN(n))l.cx.sev(0,B.d.S(n,2))
+if(n!==0&&!isNaN(n))l.cy.sev(0,B.d.S(n,2))
 l.r=A.h(o)+"/"+A.h(s)+" x "+r+" x "+A.h(p)}catch(m){}},
 Od(){var s,r=this
-try{if(r.ay)r.f=r.d-A.m3(r.db.a.a)
-else r.f=A.m3(r.db.a.a)}catch(s){r.f=0}r.ki()}}
+try{if(r.ay)r.f=r.d-A.m3(r.dx.a.a)
+else r.f=A.m3(r.dx.a.a)}catch(s){r.f=0}r.dx.a.toString
+r.ki()}}
 A.acS.prototype={
 $1(a){var s=this.a
 return s.a9(new A.acJ(s,a))},
@@ -73106,9 +73105,9 @@ r.ay=q
 s=$.aow
 if(q){r.ax=s[0]
 q=r.f
-if(q!==0&&r.d!==0)r.db.sev(0,B.d.k(r.d-q))}else{r.ax=s[1]
+if(q!==0&&r.d!==0)r.dx.sev(0,B.d.k(r.d-q))}else{r.ax=s[1]
 q=r.f
-if(q!==0&&r.d!==0)r.db.sev(0,B.d.k(q))}r.a9(new A.acH(r))},
+if(q!==0&&r.d!==0)r.dx.sev(0,B.d.k(q))}r.a9(new A.acH(r))},
 $S:0}
 A.acH.prototype={
 $0(){this.a.Od()},
@@ -73208,8 +73207,8 @@ s.a9(new A.acK(s,a))},
 $S:34}
 A.acK.prototype={
 $0(){var s,r=this.a,q=this.b
-r.ch=q
-try{r.CW=A.m3(q)}catch(s){}r.wB()},
+r.CW=q
+try{r.cx=A.m3(q)}catch(s){}r.wB()},
 $S:0}
 A.acX.prototype={
 $1(a){var s=this.a
@@ -73230,14 +73229,14 @@ $S:0}
 A.acZ.prototype={
 $1(a){var s,r=this
 if(a===0){s=r.a
-s.dy="FLUSH"}else if(a===0.25){s=r.a
-s.dy="D5W 1/4"}else if(a===0.5){s=r.a
-s.dy="1/2"}else{s=r.a
-if(a===0.75)s.dy="FLUSH 1/4"
-else s.dy="D5W"}s.a9(new A.acD(s,a))},
+s.fr="FLUSH"}else if(a===0.25){s=r.a
+s.fr="D5W 1/4"}else if(a===0.5){s=r.a
+s.fr="1/2"}else{s=r.a
+if(a===0.75)s.fr="FLUSH 1/4"
+else s.fr="D5W"}s.a9(new A.acD(s,a))},
 $S:57}
 A.acD.prototype={
-$0(){this.a.dx=this.b},
+$0(){this.a.dy=this.b},
 $S:0}
 A.K9.prototype={
 r7(a){var s,r,q=$.a3().bp(),p=a.a

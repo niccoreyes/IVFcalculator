@@ -69,6 +69,7 @@ class _MyHomePageState extends State<MyHomePage> {
   var mgdL = mgStrings[0];
   static String fixedPreMg = "🔁 Change"; //↔
   bool mgDLState = true; //default true = decrease by
+  var mgDlStateString = "";
 
   static List<String> insensibleLosses = ["500", "1000"];
   String? selectInsensible = "500";
@@ -83,7 +84,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   void dispose() {
-    controllerFWD.dispose();
+    //controllerFWD.dispose();
     super.dispose();
   }
 
@@ -143,8 +144,8 @@ class _MyHomePageState extends State<MyHomePage> {
                       border: const OutlineInputBorder(),
                       labelText: mgdL,
                     ),
-                    initialValue: mgdL,
                     controller: mgDlController,
+                    //initialValue: mgDlStateString,
                     keyboardType: TextInputType.number,
                     onChanged: (value) {
                       setState(() {
@@ -639,7 +640,7 @@ class _MyHomePageState extends State<MyHomePage> {
                               Text(
                                   "${(totalIVF * d5WvsPush).toStringAsFixed(0)} / 24 = D5W ${(totalIVF * d5WvsPush / 24).toStringAsFixed(0)} cc"),
                               Text(
-                                  "${(totalIVF * (1 - d5WvsPush)).toStringAsFixed(0)} / 6 = Flushing ${(totalIVF * (1 - d5WvsPush) / 6).toStringAsFixed(0)} cc")
+                                  "${(totalIVF * (1 - d5WvsPush)).toStringAsFixed(0)} / 6 = FLUSH ${(totalIVF * (1 - d5WvsPush) / 6).toStringAsFixed(0)} cc")
                             ],
                           )
                         ],
@@ -710,6 +711,7 @@ class _MyHomePageState extends State<MyHomePage> {
     } catch (e) {
       _target = 0;
     }
+    mgDlStateString = mgDlController.text;
     autoCalculate();
   }
 }
