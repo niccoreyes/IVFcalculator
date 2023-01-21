@@ -138,11 +138,12 @@ class _MyHomePageState extends State<MyHomePage> {
               children: [
                 Expanded(
                   flex: 3,
-                  child: TextField(
+                  child: TextFormField(
                     decoration: InputDecoration(
                       border: const OutlineInputBorder(),
-                      labelText: "${mgdL}",
+                      labelText: mgdL,
                     ),
+                    initialValue: mgdL,
                     controller: mgDlController,
                     keyboardType: TextInputType.number,
                     onChanged: (value) {
@@ -281,11 +282,12 @@ class _MyHomePageState extends State<MyHomePage> {
             const SizedBox(
               height: 16,
             ),
-            TextField(
+            TextFormField(
               decoration: const InputDecoration(
                 border: OutlineInputBorder(),
                 labelText: 'Weight (kg)',
               ),
+              initialValue: weight == 0 ? "" : weight.toString(),
               keyboardType: TextInputType.number,
               onChanged: (value) => setState(() {
                 try {
@@ -304,7 +306,7 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
             const SizedBox(height: 16.0),
             Text(
-              (_ivfRate != null && _ivfRate != '')
+              (_ivfRate != '')
                   ? 'Free water deficit: $_ivfRate'
                   : 'Free water deficit: 0/0 x Kg x TBW%',
               style: const TextStyle(fontSize: 20),
@@ -343,12 +345,14 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
             const SizedBox(height: 16.0),
             //urine output
-            TextField(
+            TextFormField(
               decoration: const InputDecoration(
                   border: OutlineInputBorder(),
                   labelText: 'Urine output (Sensible losses)',
                   prefixIcon: Icon(Icons.add)),
               keyboardType: TextInputType.number,
+              initialValue:
+                  sensibleLosses == 0 ? "" : sensibleLosses.toString(),
               onChanged: (value) => setState(() {
                 try {
                   sensibleLosses = double.parse(value);
@@ -386,12 +390,13 @@ class _MyHomePageState extends State<MyHomePage> {
                 }),
             const SizedBox(height: 16.0),
             //urine output
-            TextField(
+            TextFormField(
               decoration: const InputDecoration(
                   border: OutlineInputBorder(),
                   labelText: 'Fluid Intake',
                   prefixIcon: Icon(Icons.remove)),
               keyboardType: TextInputType.number,
+              initialValue: intake == 0 ? "" : intake.toString(),
               onChanged: (value) {
                 setState(() {
                   try {
@@ -444,7 +449,7 @@ class _MyHomePageState extends State<MyHomePage> {
             const SizedBox(height: 20.0),
             Row(
               children: [
-                Text(
+                const Text(
                   "FLUSH",
                   style: TextStyle(fontSize: 20),
                 ),
@@ -484,7 +489,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     ),
                   ),
                 ),
-                Text(
+                const Text(
                   "D5W",
                   style: TextStyle(fontSize: 20),
                 ),
@@ -536,7 +541,7 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
             // Sidenotes drawing here
             Row(
-              children: [const Text("Side Notes:")],
+              children: const [Text("Side Notes:")],
             ),
             const SizedBox(
               height: 5,
@@ -564,7 +569,7 @@ class _MyHomePageState extends State<MyHomePage> {
                             Text("$_sodium")
                           ],
                         ),
-                        Text("x ${weight} x ${_ageType} = ")
+                        Text("x $weight x $_ageType = ")
                       ],
                     )
                   ],
@@ -581,7 +586,7 @@ class _MyHomePageState extends State<MyHomePage> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Text("${calculatedFWD.toStringAsFixed(0)}"),
+                            Text(calculatedFWD.toStringAsFixed(0)),
                           ],
                         ),
                       ),
@@ -612,13 +617,13 @@ class _MyHomePageState extends State<MyHomePage> {
                               width: 25,
                               height: 25,
                               clipBehavior: Clip.antiAlias,
-                              decoration:
-                                  BoxDecoration(color: Colors.transparent),
+                              decoration: const BoxDecoration(
+                                  color: Colors.transparent),
                               child: ClipPath(
                                 clipper: VShapeClipper(),
                                 child: Container(
                                   decoration:
-                                      BoxDecoration(color: Colors.black),
+                                      const BoxDecoration(color: Colors.black),
                                 ),
                               ),
                             )
