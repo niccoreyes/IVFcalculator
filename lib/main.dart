@@ -575,13 +575,13 @@ class _MyHomePageState extends State<MyHomePage> {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     Container(
-                      height: 40,
+                      height: 30,
                       child: Center(
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Text("$calculatedFWD"),
+                            Text("${calculatedFWD.toStringAsFixed(0)}"),
                           ],
                         ),
                       ),
@@ -603,24 +603,24 @@ class _MyHomePageState extends State<MyHomePage> {
                           crossAxisAlignment: CrossAxisAlignment.center,
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Text("Total IVF: $totalIVF"),
+                            Text("Total IVF: ${totalIVF.toStringAsFixed(0)}  "),
                           ],
                         ),
                         Column(
                           children: [
                             Container(
-                              width: 50,
-                              height: 50,
+                              width: 25,
+                              height: 25,
                               clipBehavior: Clip.antiAlias,
-                              decoration: BoxDecoration(color: Colors.white),
-                              // child:
-                              // ClipPath(
-                              //   clipper: VShapeClipper(),
-                              //   child: Container(
-                              //     decoration:
-                              //         BoxDecoration(color: Colors.white),
-                              //   ),
-                              // ),
+                              decoration:
+                                  BoxDecoration(color: Colors.transparent),
+                              child: ClipPath(
+                                clipper: VShapeClipper(),
+                                child: Container(
+                                  decoration:
+                                      BoxDecoration(color: Colors.black),
+                                ),
+                              ),
                             )
                           ],
                         ),
@@ -710,13 +710,15 @@ class VShapeClipper extends CustomClipper<Path> {
   @override
   Path getClip(Size size) {
     var path = Path();
-    path.lineTo(0, size.height);
-    path.lineTo(size.width / 2, 0);
+    var thic = 2.0;
+    path.lineTo(size.width, 0);
+    path.lineTo(0, size.height / 2);
     path.lineTo(size.width, size.height);
+    path.lineTo(thic * 2, size.height / 2);
     path.lineTo(size.width, 0);
     path.close();
-    var matrix4 = Matrix4.rotationZ(1 * math.pi / 180);
-    path = path.transform(matrix4.storage);
+    // var matrix4 = Matrix4.rotationZ(1 * math.pi / 180);
+    // path = path.transform(matrix4.storage);
     return path;
   }
 
