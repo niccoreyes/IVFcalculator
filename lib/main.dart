@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'dart:math' as math;
 
 void main() {
   runApp(const MyApp());
@@ -115,11 +116,12 @@ class _MyHomePageState extends State<MyHomePage> {
           // horizontal).
           children: [
             const SizedBox(height: 16.0),
-            TextField(
+            TextFormField(
               decoration: const InputDecoration(
                 border: OutlineInputBorder(),
                 labelText: 'Sodium (mEq/L)',
               ),
+              initialValue: _sodium == 0 ? "" : _sodium.toStringAsFixed(2),
               keyboardType: TextInputType.number,
               onChanged: (value) => setState(() {
                 try {
@@ -472,7 +474,7 @@ class _MyHomePageState extends State<MyHomePage> {
                         } else if (value == 0.75) {
                           d5WvPushLabel = "FLUSH 1/4";
                         } else {
-                          d5WvPushLabel = "D5W 1";
+                          d5WvPushLabel = "D5W";
                         }
                         setState(() {
                           d5WvsPush = value;
@@ -523,6 +525,133 @@ class _MyHomePageState extends State<MyHomePage> {
                 )
               ],
             ),
+            // horizontal line
+            const SizedBox(height: 16.0),
+            Container(
+              height: 1,
+              color: Colors.grey,
+            ),
+            const SizedBox(
+              height: 16,
+            ),
+            // Sidenotes drawing here
+            Row(
+              children: [const Text("Side Notes:")],
+            ),
+            const SizedBox(
+              height: 5,
+            ),
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Column(
+                  children: [
+                    Row(
+                      children: [
+                        Column(
+                          children: [
+                            Text("${_sodium - _target}"),
+                            Container(
+                              constraints: const BoxConstraints(
+                                minWidth: 10,
+                                maxWidth: 12,
+                              ),
+                              height: 1,
+                              color: Colors.grey,
+                            ),
+                            Text("$_sodium")
+                          ],
+                        ),
+                        Text("x ${weight} x ${_ageType} = ")
+                      ],
+                    )
+                  ],
+                ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Container(
+                      height: 40,
+                      child: Center(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text("$calculatedFWD"),
+                          ],
+                        ),
+                      ),
+                    ),
+                    Text("+ $sensibleLosses"),
+                    Text("+ $insensibleVal"),
+                    Text("- $intake"),
+                    Container(
+                      constraints: const BoxConstraints(
+                        minWidth: 10,
+                        maxWidth: 70,
+                      ),
+                      height: 1,
+                      color: Colors.grey,
+                    ),
+                    Row(
+                      children: [
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text("Total IVF: $totalIVF"),
+                          ],
+                        ),
+                        Column(
+                          children: [
+                            Container(
+                              width: 50,
+                              height: 50,
+                              clipBehavior: Clip.antiAlias,
+                              decoration: BoxDecoration(color: Colors.white),
+                              // child:
+                              // ClipPath(
+                              //   clipper: VShapeClipper(),
+                              //   child: Container(
+                              //     decoration:
+                              //         BoxDecoration(color: Colors.white),
+                              //   ),
+                              // ),
+                            )
+                          ],
+                        ),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                                "${(totalIVF * d5WvsPush).toStringAsFixed(0)} / 24 = D5W ${(totalIVF * d5WvsPush / 24).toStringAsFixed(0)} cc"),
+                            Text(
+                                "${(totalIVF * (1 - d5WvsPush)).toStringAsFixed(0)} / 6 = Flushing ${(totalIVF * (1 - d5WvsPush) / 6).toStringAsFixed(0)} cc")
+                          ],
+                        )
+                      ],
+                    ),
+                  ],
+                ),
+                Column()
+              ],
+            ),
+
+            // horizontal line
+            const SizedBox(height: 16.0),
+            Container(
+              height: 1,
+              color: Colors.grey,
+            ),
+            const SizedBox(
+              height: 16,
+            ),
+
             const SizedBox(
               height: 50,
             ),
@@ -575,4 +704,31 @@ class _MyHomePageState extends State<MyHomePage> {
     }
     autoCalculate();
   }
+}
+
+class VShapeClipper extends CustomClipper<Path> {
+  @override
+  Path getClip(Size size) {
+    var path = Path();
+    path.lineTo(0, size.height);
+    path.lineTo(size.width / 2, 0);
+    path.lineTo(size.width, size.height);
+    path.lineTo(size.width, 0);
+    path.close();
+    var matrix4 = Matrix4.rotationZ(1 * math.pi / 180);
+    path = path.transform(matrix4.storage);
+    return path;
+  }
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final paint = Paint()
+      ..color = Colors.black
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = 2;
+    canvas.drawPath(getClip(size), paint);
+  }
+
+  @override
+  bool shouldReclip(CustomClipper<Path> oldClipper) => false;
 }
