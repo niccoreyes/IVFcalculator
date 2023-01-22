@@ -18,17 +18,17 @@ With the IVF Hypernatremia Calculator, managing fluid levels for IVF patients ha
 
 Download the IVF Hypernatremia Calculator now and start managing IVF patient fluids with ease.
 
-<table>
+<table border="0" cellpadding="0" cellspacing="0">
   <tr>
     <td>
-      <img alt="Picture that shows the value fields" src="screenshots/Screenshot_20230122-222151.png" width="250" height="150">
+      <img alt="Picture that shows the value fields" src="screenshots/Screenshot_20230122-222151.png" width="250" max-height="100%">
     </td>
     <td>
-      <img alt="Picture that shows Slider for adjusting" src="screenshots/Screenshot_20230122-222309.png" width="250" height="150">
+      <img alt="Picture that shows Slider for adjusting" src="screenshots/Screenshot_20230122-222309.png" width="250" max-height="100%">
     </td>
   </tr>
 </table>
 
 
-![Picture that shows the value fields](screenshots/Screenshot_20230122-222151.png)
-![Picture that shows Slider for adjusting](screenshots/Screenshot_20230122-222309.png)
+<!-- ![Picture that shows the value fields](screenshots/Screenshot_20230122-222151.png)
+![Picture that shows Slider for adjusting](screenshots/Screenshot_20230122-222309.png) -->
