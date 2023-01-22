@@ -101,616 +101,614 @@ class _MyHomePageState extends State<MyHomePage> {
     return Scaffold(
       body: Padding(
         padding: const EdgeInsets.all(10.0),
-        child: ListView(
-          // Column is also a layout widget. It takes a list of children and
-          // arranges them vertically. By default, it sizes itself to fit its
-          // children horizontally, and tries to be as tall as its parent.
-          //
-          // Invoke "debug painting" (press "p" in the console, choose the
-          // "Toggle Debug Paint" action from the Flutter Inspector in Android
-          // Studio, or the "Toggle Debug Paint" command in Visual Studio Code)
-          // to see the wireframe for each widget.
-          //
-          // Column has various properties to control how it sizes itself and
-          // how it positions its children. Here we use mainAxisAlignment to
-          // center the children vertically; the main axis here is the vertical
-          // axis because Columns are vertical (the cross axis would be
-          // horizontal).
-          children: [
-            const SizedBox(height: 16.0),
-            TextFormField(
-              decoration: const InputDecoration(
-                border: OutlineInputBorder(),
-                labelText: 'Sodium (mEq/L)',
-              ),
-              initialValue: _sodium == 0 ? "" : _sodium.toStringAsFixed(2),
-              keyboardType: TextInputType.number,
-              onChanged: (value) => setState(() {
-                try {
-                  _sodium = double.parse(value);
-                } catch (e) {
-                  _sodium = 0;
-                }
-                autoCalculate();
-              }),
-            ),
-            const SizedBox(height: 16.0),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
+        child: ListView.builder(
+          primary: false,
+          itemCount: 1,
+          itemBuilder: (BuildContext context, int index) {
+            return Column(
               children: [
-                Expanded(
-                  flex: 3,
-                  child: TextFormField(
-                    decoration: InputDecoration(
-                      border: const OutlineInputBorder(),
-                      labelText: mgdL,
+                const SizedBox(height: 16.0),
+                TextFormField(
+                  decoration: const InputDecoration(
+                    border: OutlineInputBorder(),
+                    labelText: 'Sodium (mEq/L)',
+                  ),
+                  initialValue: _sodium == 0 ? "" : _sodium.toStringAsFixed(2),
+                  keyboardType: TextInputType.number,
+                  onChanged: (value) => setState(() {
+                    try {
+                      _sodium = double.parse(value);
+                    } catch (e) {
+                      _sodium = 0;
+                    }
+                    autoCalculate();
+                  }),
+                ),
+                const SizedBox(height: 16.0),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Expanded(
+                      flex: 3,
+                      child: TextFormField(
+                        decoration: InputDecoration(
+                          border: const OutlineInputBorder(),
+                          labelText: mgdL,
+                        ),
+                        controller: mgDlController,
+                        //initialValue: mgDlStateString,
+                        keyboardType: TextInputType.number,
+                        onChanged: (value) {
+                          setState(() {
+                            mgDlProcess();
+                          });
+                        },
+                      ),
                     ),
-                    controller: mgDlController,
-                    //initialValue: mgDlStateString,
-                    keyboardType: TextInputType.number,
-                    onChanged: (value) {
-                      setState(() {
-                        mgDlProcess();
-                      });
-                    },
-                  ),
+                    const SizedBox(width: 16.0),
+                    ElevatedButton(
+                        onPressed: () {
+                          mgDLState = !mgDLState;
+                          if (mgDLState) {
+                            mgdL = mgStrings[0];
+                            if (_target != 0 && _sodium != 0) {
+                              mgDlController.text =
+                                  (_sodium - _target).toString();
+                            }
+                          } else {
+                            mgdL = mgStrings[1];
+                            if (_target != 0 && _sodium != 0) {
+                              mgDlController.text = (_target).toString();
+                            }
+                          }
+                          setState(() {
+                            mgDlProcess();
+                          });
+                        },
+                        child: Padding(
+                          padding: const EdgeInsets.all(12.0),
+                          child: Text(fixedPreMg),
+                        ))
+                  ],
                 ),
-                const SizedBox(width: 16.0),
-                ElevatedButton(
-                    onPressed: () {
-                      mgDLState = !mgDLState;
-                      if (mgDLState) {
-                        mgdL = mgStrings[0];
-                        if (_target != 0 && _sodium != 0) {
-                          mgDlController.text = (_sodium - _target).toString();
-                        }
-                      } else {
-                        mgdL = mgStrings[1];
-                        if (_target != 0 && _sodium != 0) {
-                          mgDlController.text = (_target).toString();
-                        }
-                      }
-                      setState(() {
-                        mgDlProcess();
-                      });
-                    },
-                    child: Padding(
-                      padding: const EdgeInsets.all(12.0),
-                      child: Text(fixedPreMg),
-                    ))
-              ],
-            ),
-            const SizedBox(height: 16.0),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Expanded(
-                    flex: 1,
-                    child: RadioListTile(
-                      value: 'Male',
-                      groupValue: sex,
-                      title: const Text('Male'),
-                      onChanged: (value) => setState(() {
-                        sex = "Male";
-                        if (_selectedOption == "Child") {
-                          _ageType = 0.60;
-                        } else if (_selectedOption == "Adult") {
-                          _ageType = 0.60;
-                        } else if (_selectedOption == "Elderly") {
-                          _ageType = 0.50;
-                        }
-                        autoCalculate();
-                      }),
-                    )),
-                Expanded(
-                    flex: 1,
-                    child: RadioListTile(
-                      value: 'Female',
-                      groupValue: sex,
-                      title: const Text('Female'),
-                      onChanged: (value) => setState(() {
-                        sex = "Female";
-                        if (_selectedOption == "Child") {
-                          _ageType = 0.60;
-                        } else if (_selectedOption == "Adult") {
-                          _ageType = 0.50;
-                        } else if (_selectedOption == "Elderly") {
-                          _ageType = 0.45;
-                        }
-                        autoCalculate();
-                      }),
-                    ))
-              ],
-            ),
-            const SizedBox(height: 16.0),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Expanded(
-                  flex: 1,
-                  child: RadioListTile(
-                      value: 'Child',
-                      groupValue: _selectedOption,
-                      title: const Text('Child'),
-                      onChanged: (value) => setState(() {
-                            _selectedOption = value!;
-                            _ageType = 0.60;
+                const SizedBox(height: 16.0),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Expanded(
+                        flex: 1,
+                        child: RadioListTile(
+                          value: 'Male',
+                          groupValue: sex,
+                          title: const Text('Male'),
+                          onChanged: (value) => setState(() {
+                            sex = "Male";
+                            if (_selectedOption == "Child") {
+                              _ageType = 0.60;
+                            } else if (_selectedOption == "Adult") {
+                              _ageType = 0.60;
+                            } else if (_selectedOption == "Elderly") {
+                              _ageType = 0.50;
+                            }
                             autoCalculate();
-                          })),
+                          }),
+                        )),
+                    Expanded(
+                        flex: 1,
+                        child: RadioListTile(
+                          value: 'Female',
+                          groupValue: sex,
+                          title: const Text('Female'),
+                          onChanged: (value) => setState(() {
+                            sex = "Female";
+                            if (_selectedOption == "Child") {
+                              _ageType = 0.60;
+                            } else if (_selectedOption == "Adult") {
+                              _ageType = 0.50;
+                            } else if (_selectedOption == "Elderly") {
+                              _ageType = 0.45;
+                            }
+                            autoCalculate();
+                          }),
+                        ))
+                  ],
                 ),
-                Expanded(
-                  flex: 1,
-                  child: RadioListTile(
-                    value: 'Adult',
-                    groupValue: _selectedOption,
-                    title: const Text('Adult'),
-                    onChanged: (value) => setState(() {
-                      _selectedOption = value!;
-                      if (sex == "Male") {
-                        _ageType = 0.60;
-                      } else {
-                        _ageType = 0.50;
-                      }
-                      autoCalculate();
-                    }),
+                const SizedBox(height: 16.0),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Expanded(
+                      flex: 1,
+                      child: RadioListTile(
+                          value: 'Child',
+                          groupValue: _selectedOption,
+                          title: const Text('Child'),
+                          onChanged: (value) => setState(() {
+                                _selectedOption = value!;
+                                _ageType = 0.60;
+                                autoCalculate();
+                              })),
+                    ),
+                    Expanded(
+                      flex: 1,
+                      child: RadioListTile(
+                        value: 'Adult',
+                        groupValue: _selectedOption,
+                        title: const Text('Adult'),
+                        onChanged: (value) => setState(() {
+                          _selectedOption = value!;
+                          if (sex == "Male") {
+                            _ageType = 0.60;
+                          } else {
+                            _ageType = 0.50;
+                          }
+                          autoCalculate();
+                        }),
+                      ),
+                    ),
+                    Expanded(
+                      flex: 1,
+                      child: RadioListTile(
+                        value: 'Elderly',
+                        groupValue: _selectedOption,
+                        title: const Text('Elderly',
+                            style: TextStyle(fontSize: 12.0)),
+                        onChanged: (value) => setState(() {
+                          _selectedOption = value!;
+                          if (sex == "Male") {
+                            _ageType = 0.50;
+                          } else {
+                            _ageType = 0.45;
+                          }
+                          autoCalculate();
+                        }),
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(
+                  height: 16,
+                ),
+                Text(_selectedOption != ""
+                    ? 'Selected: $_selectedOption ($_ageType) Estimated TBW'
+                    : 'Select Age : Estimated TBW'),
+                const SizedBox(
+                  height: 16,
+                ),
+                TextFormField(
+                  decoration: const InputDecoration(
+                    border: OutlineInputBorder(),
+                    labelText: 'Weight (kg)',
                   ),
+                  initialValue: weight == 0 ? "" : weight.toString(),
+                  keyboardType: TextInputType.number,
+                  onChanged: (value) => setState(() {
+                    try {
+                      weight = int.parse(value);
+                    } catch (e) {
+                      weight = 0;
+                    }
+                    autoCalculate();
+                  }),
                 ),
-                Expanded(
-                  flex: 1,
-                  child: RadioListTile(
-                    value: 'Elderly',
-                    groupValue: _selectedOption,
-                    title:
-                        const Text('Elderly', style: TextStyle(fontSize: 12.0)),
-                    onChanged: (value) => setState(() {
-                      _selectedOption = value!;
-                      if (sex == "Male") {
-                        _ageType = 0.50;
-                      } else {
-                        _ageType = 0.45;
-                      }
-                      autoCalculate();
-                    }),
-                  ),
+                // horizontal line
+                const SizedBox(height: 16.0),
+                Container(
+                  height: 1,
+                  color: Colors.grey,
                 ),
-              ],
-            ),
-            const SizedBox(
-              height: 16,
-            ),
-            Text(_selectedOption != ""
-                ? 'Selected: $_selectedOption ($_ageType) Estimated TBW'
-                : 'Select Age : Estimated TBW'),
-            const SizedBox(
-              height: 16,
-            ),
-            TextFormField(
-              decoration: const InputDecoration(
-                border: OutlineInputBorder(),
-                labelText: 'Weight (kg)',
-              ),
-              initialValue: weight == 0 ? "" : weight.toString(),
-              keyboardType: TextInputType.number,
-              onChanged: (value) => setState(() {
-                try {
-                  weight = int.parse(value);
-                } catch (e) {
-                  weight = 0;
-                }
-                autoCalculate();
-              }),
-            ),
-            // horizontal line
-            const SizedBox(height: 16.0),
-            Container(
-              height: 1,
-              color: Colors.grey,
-            ),
-            const SizedBox(height: 16.0),
-            Text(
-              (_ivfRate != '')
-                  ? 'Free water deficit: $_ivfRate'
-                  : 'Free water deficit: 0/0 x Kg x TBW%',
-              style: const TextStyle(fontSize: 20),
-            ),
-            const SizedBox(height: 16.0),
-            Row(
-              children: [
-                Expanded(
-                  child: TextField(
-                    decoration: const InputDecoration(
-                        border: OutlineInputBorder(),
-                        labelText: 'Calculated Free Water Deficit',
-                        prefixIcon: Icon(Icons.equalizer)),
-                    keyboardType: TextInputType.number,
-                    controller: controllerFWD,
-                    onChanged: (value) => setState(() {
+                const SizedBox(height: 16.0),
+                Text(
+                  (_ivfRate != '')
+                      ? 'Free water deficit: $_ivfRate'
+                      : 'Free water deficit: 0/0 x Kg x TBW%',
+                  style: const TextStyle(fontSize: 20),
+                ),
+                const SizedBox(height: 16.0),
+                Row(
+                  children: [
+                    Expanded(
+                      child: TextField(
+                        decoration: const InputDecoration(
+                            border: OutlineInputBorder(),
+                            labelText: 'Calculated Free Water Deficit',
+                            prefixIcon: Icon(Icons.equalizer)),
+                        keyboardType: TextInputType.number,
+                        controller: controllerFWD,
+                        onChanged: (value) => setState(() {
+                          try {
+                            calculatedFWD = double.parse(value);
+                          } catch (e) {
+                            calculatedFWD = 0.00;
+                          }
+                          totalSum();
+                        }),
+                      ),
+                    ),
+                    const SizedBox(
+                      width: 16.0,
+                    ),
+                    // ElevatedButton(
+                    //     onPressed: () => autoCalculate(),
+                    //     child: const Padding(
+                    //       padding: EdgeInsets.all(10.0),
+                    //       child: Text("🔁 Refresh"),
+                    //     ))
+                  ],
+                ),
+                const SizedBox(height: 16.0),
+                //urine output
+                TextFormField(
+                  decoration: const InputDecoration(
+                      border: OutlineInputBorder(),
+                      labelText: 'Urine output (Sensible losses)',
+                      prefixIcon: Icon(Icons.add)),
+                  keyboardType: TextInputType.number,
+                  initialValue:
+                      sensibleLosses == 0 ? "" : sensibleLosses.toString(),
+                  onChanged: (value) => setState(() {
+                    try {
+                      sensibleLosses = double.parse(value);
+                    } catch (e) {
+                      sensibleLosses = 0.00;
+                    }
+                    totalSum();
+                  }),
+                ),
+                const SizedBox(height: 16.0),
+                TextFormField(
+                  decoration: const InputDecoration(
+                      border: OutlineInputBorder(),
+                      labelText: 'Insensible Losses',
+                      prefixIcon: Icon(Icons.add)),
+                  keyboardType: TextInputType.number,
+                  initialValue:
+                      insensibleVal == 0 ? "" : insensibleVal.toString(),
+                  onChanged: (value) => setState(() {
+                    try {
+                      insensibleVal = double.parse(value);
+                    } catch (e) {
+                      insensibleVal = 0.00;
+                    }
+                    totalSum();
+                  }),
+                ),
+                // DropdownButtonFormField(
+                //     decoration: const InputDecoration(
+                //         prefixIcon: Icon(Icons.add),
+                //         labelText: "Insensible Losses",
+                //         border: OutlineInputBorder()),
+                //     value: selectInsensible,
+                //     items: insensibleLosses
+                //         .map((item) => DropdownMenuItem<String>(
+                //             value: item,
+                //             child: Text(
+                //               item,
+                //               style: const TextStyle(fontSize: 16),
+                //             )))
+                //         .toList(),
+                //     onChanged: (item) {
+                //       setState(() {
+                //         selectInsensible = item;
+                //         if (selectInsensible != null) {
+                //           try {
+                //             insensibleVal = double.parse(selectInsensible!);
+                //           } catch (e) {}
+                //           totalSum();
+                //         }
+                //       });
+                //     }),
+                const SizedBox(height: 16.0),
+                //urine output
+                TextFormField(
+                  decoration: const InputDecoration(
+                      border: OutlineInputBorder(),
+                      labelText: 'Fluid Intake',
+                      prefixIcon: Icon(Icons.remove)),
+                  keyboardType: TextInputType.number,
+                  initialValue: intake == 0 ? "" : intake.toString(),
+                  onChanged: (value) {
+                    setState(() {
                       try {
-                        calculatedFWD = double.parse(value);
+                        intake = double.parse(value);
                       } catch (e) {
-                        calculatedFWD = 0.00;
+                        intake = 0.00;
                       }
                       totalSum();
-                    }),
+                    });
+                  },
+                ),
+                // horizontal line
+                const SizedBox(height: 16.0),
+                Container(
+                  height: 1,
+                  color: Colors.grey,
+                ),
+                const SizedBox(height: 16.0),
+                // Intake
+                Row(
+                  children: [
+                    Expanded(
+                      child: TextField(
+                        decoration: const InputDecoration(
+                            border: OutlineInputBorder(),
+                            labelText: 'Total IVF Fluids',
+                            prefixIcon: Icon(Icons.data_exploration)),
+                        keyboardType: TextInputType.number,
+                        controller: controllerTotal,
+                        onChanged: (value) => setState(() {
+                          try {
+                            totalIVF = double.parse(value);
+                          } catch (e) {
+                            totalIVF = 0.00;
+                          }
+                        }),
+                      ),
+                    ),
+                    const SizedBox(
+                      width: 16.0,
+                    ),
+                    // ElevatedButton(
+                    //     onPressed: () => autoCalculate(),
+                    //     child: const Padding(
+                    //       padding: EdgeInsets.all(10.0),
+                    //       child: Text("🔁 Refresh"),
+                    //     ))
+                  ],
+                ),
+                const SizedBox(height: 20.0),
+                Row(
+                  children: [
+                    const Text(
+                      "D5W",
+                      style: TextStyle(fontSize: 20),
+                    ),
+                    Expanded(
+                      flex: 1,
+                      child: SliderTheme(
+                        data: const SliderThemeData(
+                          trackHeight: 4,
+                          thumbShape:
+                              RoundSliderThumbShape(enabledThumbRadius: 12),
+                          overlayShape:
+                              RoundSliderOverlayShape(overlayRadius: 28),
+                          tickMarkShape:
+                              RoundSliderTickMarkShape(tickMarkRadius: 4),
+                        ),
+                        child: Slider(
+                          min: 0,
+                          max: 1.0,
+                          divisions: 4,
+                          value: d5WvsPush,
+                          label: d5WvPushLabel,
+                          onChanged: (value) {
+                            if (value == 0) {
+                              d5WvPushLabel = "FLUSH";
+                            } else if (value == 0.25) {
+                              d5WvPushLabel = "D5W 1/4";
+                            } else if (value == 0.5) {
+                              d5WvPushLabel = "1/2";
+                            } else if (value == 0.75) {
+                              d5WvPushLabel = "FLUSH 1/4";
+                            } else {
+                              d5WvPushLabel = "D5W";
+                            }
+                            setState(() {
+                              d5WvsPush = value;
+                            });
+                            // Update the value shown in the text field
+                          },
+                        ),
+                      ),
+                    ),
+                    const Text(
+                      "FLUSH",
+                      style: TextStyle(fontSize: 20),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 10.0),
+                //_AnimatedLiquidLinearProgressIndicator(),
+                Container(
+                  width: double.infinity,
+                  height: 35,
+                  padding: const EdgeInsets.symmetric(horizontal: 24.0),
+                  child: LiquidLinearProgressIndicator(
+                    value: d5WvsPush, // Defaults to 0.5.
+                    valueColor: const AlwaysStoppedAnimation(Colors
+                        .blue), // Defaults to the current Theme's accentColor.
+                    backgroundColor: const Color.fromARGB(255, 249, 255,
+                        254), // Defaults to the current Theme's backgroundColor.
+                    borderColor: Colors.blue,
+                    borderWidth: 2.0,
+                    borderRadius: 12.0,
+                    direction: Axis
+                        .horizontal, // The direction the liquid moves (Axis.vertical = bottom to top, Axis.horizontal = left to right). Defaults to Axis.horizontal.
+                    center: Text(
+                        "D5W ${((d5WvsPush) * 100).toStringAsFixed(0)}%",
+                        style: const TextStyle(
+                            color: Colors.white,
+                            shadows: <Shadow>[
+                              Shadow(
+                                offset: Offset(0.0, 0.0),
+                                blurRadius: 3.0,
+                                color: Color.fromARGB(255, 0, 0, 0),
+                              )
+                            ])),
                   ),
+                ),
+                const SizedBox(height: 20),
+                // horizontal line
+                const SizedBox(height: 16.0),
+                Container(
+                  height: 1,
+                  color: Colors.grey,
                 ),
                 const SizedBox(
-                  width: 16.0,
+                  height: 16,
                 ),
-                // ElevatedButton(
-                //     onPressed: () => autoCalculate(),
-                //     child: const Padding(
-                //       padding: EdgeInsets.all(10.0),
-                //       child: Text("🔁 Refresh"),
-                //     ))
-              ],
-            ),
-            const SizedBox(height: 16.0),
-            //urine output
-            TextFormField(
-              decoration: const InputDecoration(
-                  border: OutlineInputBorder(),
-                  labelText: 'Urine output (Sensible losses)',
-                  prefixIcon: Icon(Icons.add)),
-              keyboardType: TextInputType.number,
-              initialValue:
-                  sensibleLosses == 0 ? "" : sensibleLosses.toString(),
-              onChanged: (value) => setState(() {
-                try {
-                  sensibleLosses = double.parse(value);
-                } catch (e) {
-                  sensibleLosses = 0.00;
-                }
-                totalSum();
-              }),
-            ),
-            const SizedBox(height: 16.0),
-            TextFormField(
-              decoration: const InputDecoration(
-                  border: OutlineInputBorder(),
-                  labelText: 'Insensible Losses',
-                  prefixIcon: Icon(Icons.add)),
-              keyboardType: TextInputType.number,
-              initialValue: insensibleVal == 0 ? "" : insensibleVal.toString(),
-              onChanged: (value) => setState(() {
-                try {
-                  insensibleVal = double.parse(value);
-                } catch (e) {
-                  insensibleVal = 0.00;
-                }
-                totalSum();
-              }),
-            ),
-            // DropdownButtonFormField(
-            //     decoration: const InputDecoration(
-            //         prefixIcon: Icon(Icons.add),
-            //         labelText: "Insensible Losses",
-            //         border: OutlineInputBorder()),
-            //     value: selectInsensible,
-            //     items: insensibleLosses
-            //         .map((item) => DropdownMenuItem<String>(
-            //             value: item,
-            //             child: Text(
-            //               item,
-            //               style: const TextStyle(fontSize: 16),
-            //             )))
-            //         .toList(),
-            //     onChanged: (item) {
-            //       setState(() {
-            //         selectInsensible = item;
-            //         if (selectInsensible != null) {
-            //           try {
-            //             insensibleVal = double.parse(selectInsensible!);
-            //           } catch (e) {}
-            //           totalSum();
-            //         }
-            //       });
-            //     }),
-            const SizedBox(height: 16.0),
-            //urine output
-            TextFormField(
-              decoration: const InputDecoration(
-                  border: OutlineInputBorder(),
-                  labelText: 'Fluid Intake',
-                  prefixIcon: Icon(Icons.remove)),
-              keyboardType: TextInputType.number,
-              initialValue: intake == 0 ? "" : intake.toString(),
-              onChanged: (value) {
-                setState(() {
-                  try {
-                    intake = double.parse(value);
-                  } catch (e) {
-                    intake = 0.00;
-                  }
-                  totalSum();
-                });
-              },
-            ),
-            // horizontal line
-            const SizedBox(height: 16.0),
-            Container(
-              height: 1,
-              color: Colors.grey,
-            ),
-            const SizedBox(height: 16.0),
-            // Intake
-            Row(
-              children: [
-                Expanded(
-                  child: TextField(
-                    decoration: const InputDecoration(
-                        border: OutlineInputBorder(),
-                        labelText: 'Total IVF Fluids',
-                        prefixIcon: Icon(Icons.data_exploration)),
-                    keyboardType: TextInputType.number,
-                    controller: controllerTotal,
-                    onChanged: (value) => setState(() {
-                      try {
-                        totalIVF = double.parse(value);
-                      } catch (e) {
-                        totalIVF = 0.00;
-                      }
-                    }),
-                  ),
+                Row(
+                  children: [
+                    Text(
+                        "D5W ➡️ ${(totalIVF * d5WvsPush).toStringAsFixed(0)} / 24 \n= ${(totalIVF * d5WvsPush / 24).toStringAsFixed(0)} cc",
+                        style: const TextStyle(fontSize: 20))
+                  ],
+                ),
+                // horizontal line
+                const SizedBox(height: 16.0),
+                Container(
+                  height: 1,
+                  color: Colors.grey,
                 ),
                 const SizedBox(
-                  width: 16.0,
+                  height: 16,
                 ),
-                // ElevatedButton(
-                //     onPressed: () => autoCalculate(),
-                //     child: const Padding(
-                //       padding: EdgeInsets.all(10.0),
-                //       child: Text("🔁 Refresh"),
-                //     ))
-              ],
-            ),
-            const SizedBox(height: 20.0),
-            Row(
-              children: [
-                const Text(
-                  "D5W",
-                  style: TextStyle(fontSize: 20),
+                Row(
+                  children: [
+                    Text(
+                      "FLUSHING ➡️ ${(totalIVF * (1 - d5WvsPush)).toStringAsFixed(0)} / 6 \n= ${(totalIVF * (1 - d5WvsPush) / 6).toStringAsFixed(0)} cc",
+                      style: const TextStyle(fontSize: 20),
+                    )
+                  ],
                 ),
-                Expanded(
-                  flex: 1,
-                  child: SliderTheme(
-                    data: const SliderThemeData(
-                      trackHeight: 4,
-                      thumbShape: RoundSliderThumbShape(enabledThumbRadius: 12),
-                      overlayShape: RoundSliderOverlayShape(overlayRadius: 28),
-                      tickMarkShape:
-                          RoundSliderTickMarkShape(tickMarkRadius: 4),
-                    ),
-                    child: Slider(
-                      min: 0,
-                      max: 1.0,
-                      divisions: 4,
-                      value: d5WvsPush,
-                      label: d5WvPushLabel,
-                      onChanged: (value) {
-                        if (value == 0) {
-                          d5WvPushLabel = "FLUSH";
-                        } else if (value == 0.25) {
-                          d5WvPushLabel = "D5W 1/4";
-                        } else if (value == 0.5) {
-                          d5WvPushLabel = "1/2";
-                        } else if (value == 0.75) {
-                          d5WvPushLabel = "FLUSH 1/4";
-                        } else {
-                          d5WvPushLabel = "D5W";
-                        }
-                        setState(() {
-                          d5WvsPush = value;
-                        });
-                        // Update the value shown in the text field
-                      },
-                    ),
-                  ),
+                // horizontal line
+                const SizedBox(height: 16.0),
+                Container(
+                  height: 1,
+                  color: Colors.grey,
                 ),
-                const Text(
-                  "FLUSH",
-                  style: TextStyle(fontSize: 20),
+                const SizedBox(
+                  height: 16,
                 ),
-              ],
-            ),
-            const SizedBox(height: 10.0),
-            //_AnimatedLiquidLinearProgressIndicator(),
-            Container(
-              width: double.infinity,
-              height: 35,
-              padding: const EdgeInsets.symmetric(horizontal: 24.0),
-              child: LiquidLinearProgressIndicator(
-                value: d5WvsPush, // Defaults to 0.5.
-                valueColor: const AlwaysStoppedAnimation(Colors
-                    .blue), // Defaults to the current Theme's accentColor.
-                backgroundColor: const Color.fromARGB(255, 249, 255,
-                    254), // Defaults to the current Theme's backgroundColor.
-                borderColor: Colors.blue,
-                borderWidth: 2.0,
-                borderRadius: 12.0,
-                direction: Axis
-                    .horizontal, // The direction the liquid moves (Axis.vertical = bottom to top, Axis.horizontal = left to right). Defaults to Axis.horizontal.
-                center: Text("D5W ${((d5WvsPush) * 100).toStringAsFixed(0)}%",
-                    style:
-                        const TextStyle(color: Colors.white, shadows: <Shadow>[
-                      Shadow(
-                        offset: Offset(0.0, 0.0),
-                        blurRadius: 3.0,
-                        color: Color.fromARGB(255, 0, 0, 0),
-                      )
-                    ])),
-              ),
-            ),
-            const SizedBox(height: 20),
-            // horizontal line
-            const SizedBox(height: 16.0),
-            Container(
-              height: 1,
-              color: Colors.grey,
-            ),
-            const SizedBox(
-              height: 16,
-            ),
-            Row(
-              children: [
-                Text(
-                    "D5W ➡️ ${(totalIVF * d5WvsPush).toStringAsFixed(0)} / 24 \n= ${(totalIVF * d5WvsPush / 24).toStringAsFixed(0)} cc",
-                    style: const TextStyle(fontSize: 20))
-              ],
-            ),
-            // horizontal line
-            const SizedBox(height: 16.0),
-            Container(
-              height: 1,
-              color: Colors.grey,
-            ),
-            const SizedBox(
-              height: 16,
-            ),
-            Row(
-              children: [
-                Text(
-                  "FLUSHING ➡️ ${(totalIVF * (1 - d5WvsPush)).toStringAsFixed(0)} / 6 \n= ${(totalIVF * (1 - d5WvsPush) / 6).toStringAsFixed(0)} cc",
-                  style: const TextStyle(fontSize: 20),
-                )
-              ],
-            ),
-            // horizontal line
-            const SizedBox(height: 16.0),
-            Container(
-              height: 1,
-              color: Colors.grey,
-            ),
-            const SizedBox(
-              height: 16,
-            ),
-            // Sidenotes drawing here
-            Row(
-              children: const [Text("Side Notes:")],
-            ),
-            const SizedBox(
-              height: 5,
-            ),
-            SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.start,
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Column(
-                    children: [
-                      Row(
-                        children: [
-                          Column(
-                            children: [
-                              Text("${_sodium - _target}"),
-                              Container(
-                                constraints: const BoxConstraints(
-                                  minWidth: 10,
-                                  maxWidth: 12,
-                                ),
-                                height: 1,
-                                color: Colors.grey,
-                              ),
-                              Text("$_sodium")
-                            ],
-                          ),
-                          Text("x $weight x $_ageType = ")
-                        ],
-                      )
-                    ],
-                  ),
-                  Column(
+                // Sidenotes drawing here
+                Row(
+                  children: const [Text("Side Notes:")],
+                ),
+                const SizedBox(
+                  height: 5,
+                ),
+                SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.start,
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      Container(
-                        height: 30,
-                        child: Center(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text(calculatedFWD.toStringAsFixed(0)),
-                            ],
-                          ),
-                        ),
-                      ),
-                      Text("+ $sensibleLosses"),
-                      Text("+ $insensibleVal"),
-                      Text("- $intake"),
-                      Container(
-                        constraints: const BoxConstraints(
-                          minWidth: 10,
-                          maxWidth: 70,
-                        ),
-                        height: 1,
-                        color: Colors.grey,
-                      ),
-                      Row(
+                      Column(
                         children: [
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            mainAxisAlignment: MainAxisAlignment.center,
+                          Row(
                             children: [
-                              Text(
-                                  "Total IVF: ${totalIVF.toStringAsFixed(0)}  "),
-                            ],
-                          ),
-                          Column(
-                            children: [
-                              Container(
-                                width: 25,
-                                height: 25,
-                                clipBehavior: Clip.antiAlias,
-                                decoration: const BoxDecoration(
-                                    color: Colors.transparent),
-                                child: ClipPath(
-                                  clipper: VShapeClipper(),
-                                  child: Container(
-                                    decoration: const BoxDecoration(
-                                        color: Colors.black),
+                              Column(
+                                children: [
+                                  Text("${_sodium - _target}"),
+                                  Container(
+                                    constraints: const BoxConstraints(
+                                      minWidth: 10,
+                                      maxWidth: 12,
+                                    ),
+                                    height: 1,
+                                    color: Colors.grey,
                                   ),
-                                ),
-                              )
-                            ],
-                          ),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text(
-                                  "${(totalIVF * d5WvsPush).toStringAsFixed(0)} / 24 = D5W ${(totalIVF * d5WvsPush / 24).toStringAsFixed(0)} cc"),
-                              Text(
-                                  "${(totalIVF * (1 - d5WvsPush)).toStringAsFixed(0)} / 6 = FLUSH ${(totalIVF * (1 - d5WvsPush) / 6).toStringAsFixed(0)} cc")
+                                  Text("$_sodium")
+                                ],
+                              ),
+                              Text("x $weight x $_ageType = ")
                             ],
                           )
                         ],
                       ),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Container(
+                            height: 30,
+                            child: Center(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text(calculatedFWD.toStringAsFixed(0)),
+                                ],
+                              ),
+                            ),
+                          ),
+                          Text("+ $sensibleLosses"),
+                          Text("+ $insensibleVal"),
+                          Text("- $intake"),
+                          Container(
+                            constraints: const BoxConstraints(
+                              minWidth: 10,
+                              maxWidth: 70,
+                            ),
+                            height: 1,
+                            color: Colors.grey,
+                          ),
+                          Row(
+                            children: [
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text(
+                                      "Total IVF: ${totalIVF.toStringAsFixed(0)}  "),
+                                ],
+                              ),
+                              Column(
+                                children: [
+                                  Container(
+                                    width: 25,
+                                    height: 25,
+                                    clipBehavior: Clip.antiAlias,
+                                    decoration: const BoxDecoration(
+                                        color: Colors.transparent),
+                                    child: ClipPath(
+                                      clipper: VShapeClipper(),
+                                      child: Container(
+                                        decoration: const BoxDecoration(
+                                            color: Colors.black),
+                                      ),
+                                    ),
+                                  )
+                                ],
+                              ),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text(
+                                      "${(totalIVF * d5WvsPush).toStringAsFixed(0)} / 24 = D5W ${(totalIVF * d5WvsPush / 24).toStringAsFixed(0)} cc"),
+                                  Text(
+                                      "${(totalIVF * (1 - d5WvsPush)).toStringAsFixed(0)} / 6 = FLUSH ${(totalIVF * (1 - d5WvsPush) / 6).toStringAsFixed(0)} cc")
+                                ],
+                              )
+                            ],
+                          ),
+                        ],
+                      ),
                     ],
                   ),
-                ],
-              ),
-            ),
+                ),
 
-            // horizontal line
-            const SizedBox(height: 16.0),
-            Container(
-              height: 1,
-              color: Colors.grey,
-            ),
-            const SizedBox(
-              height: 16,
-            ),
+                // horizontal line
+                const SizedBox(height: 16.0),
+                Container(
+                  height: 1,
+                  color: Colors.grey,
+                ),
+                const SizedBox(
+                  height: 16,
+                ),
 
-            const SizedBox(
-              height: 50,
-            ),
-            const Text(
-                "I am grateful to everyone who contributed to making this project possible. Special thanks to Dr. Danielle Lucero for her guidance. I hope this tool will hasten IVF calculation correction for patients in USTH.\n - Thomas Reyes")
-          ],
+                const SizedBox(
+                  height: 50,
+                ),
+                const Text(
+                    "I am grateful to everyone who contributed to making this project possible. Special thanks to Dr. Danielle Lucero, Dr. Cindy Ong, and Dr. Maita Dimayuga for their guidance. I hope this tool will hasten IVF calculation correction for patients in USTH.\n - Thomas Reyes")
+              ],
+            );
+          },
         ),
       ),
     );
