@@ -1,17 +1,19 @@
-# ivf_correction_calculator
+# IVF Hypernatremia Calculator - Easy Fluid Management for Medical Professionals
 
 Go directly to the site:
 https://niccoreyes.github.io/IVFcalculator/build/web/
 
 ## Getting Started
+With the IVF Hypernatremia Calculator, managing fluid levels for IVF patients has never been easier.
 
-This project is a starting point for a Flutter application.
+* **Easy to use**: Simply enter the patient's age, gender, weight, and their sensible and insensible losses and the app will calculate the appropriate amount of flushing or fluids to administer.
 
-A few resources to get you started if this is your first Flutter project:
+* **Essential tool**: This app is an essential tool for any medical professional working in the field of IVF.
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+* **Accurate calculations**: The app uses a clinically validated formula to ensure accurate calculations.
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+* **Avoid Hypernatremia**: The app helps avoid the dangers of hypernatremia by ensuring patients receive the correct amount of fluids
+
+* **Support**: If you have any questions or issues with the app, please feel free to contact me.
+
+Download the IVF Hypernatremia Calculator now and start managing IVF patient fluids with ease.
