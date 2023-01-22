@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'dart:math' as math;
+import 'package:liquid_progress_indicator/liquid_progress_indicator.dart';
 
 void main() {
   runApp(const MyApp());
@@ -496,8 +497,35 @@ class _MyHomePageState extends State<MyHomePage> {
                 ),
               ],
             ),
-            const SizedBox(height: 20.0),
-
+            const SizedBox(height: 10.0),
+            //_AnimatedLiquidLinearProgressIndicator(),
+            Container(
+              width: double.infinity,
+              height: 35,
+              padding: EdgeInsets.symmetric(horizontal: 24.0),
+              child: LiquidLinearProgressIndicator(
+                value: d5WvsPush, // Defaults to 0.5.
+                valueColor: AlwaysStoppedAnimation(Colors
+                    .blue), // Defaults to the current Theme's accentColor.
+                backgroundColor: Color.fromARGB(255, 249, 255,
+                    254), // Defaults to the current Theme's backgroundColor.
+                borderColor: Colors.blue,
+                borderWidth: 2.0,
+                borderRadius: 12.0,
+                direction: Axis
+                    .horizontal, // The direction the liquid moves (Axis.vertical = bottom to top, Axis.horizontal = left to right). Defaults to Axis.horizontal.
+                center: Text("Flush ${(d5WvsPush * 100).toStringAsFixed(0)}%",
+                    style:
+                        const TextStyle(color: Colors.white, shadows: <Shadow>[
+                      Shadow(
+                        offset: Offset(0.0, 0.0),
+                        blurRadius: 3.0,
+                        color: Color.fromARGB(255, 0, 0, 0),
+                      )
+                    ])),
+              ),
+            ),
+            const SizedBox(height: 20),
             // horizontal line
             const SizedBox(height: 16.0),
             Container(
@@ -744,3 +772,59 @@ class VShapeClipper extends CustomClipper<Path> {
   @override
   bool shouldReclip(CustomClipper<Path> oldClipper) => false;
 }
+
+// class _AnimatedLiquidLinearProgressIndicator extends StatefulWidget {
+//   @override
+//   State<StatefulWidget> createState() =>
+//       _AnimatedLiquidLinearProgressIndicatorState();
+// }
+
+// class _AnimatedLiquidLinearProgressIndicatorState
+//     extends State<_AnimatedLiquidLinearProgressIndicator>
+//     with SingleTickerProviderStateMixin {
+//   late AnimationController _animationController;
+
+//   @override
+//   void initState() {
+//     super.initState();
+//     _animationController = AnimationController(
+//       vsync: this,
+//       duration: Duration(seconds: 1),
+//     );
+
+//     _animationController.addListener(() => setState(() {}));
+//     _animationController.repeat();
+//   }
+
+//   @override
+//   void dispose() {
+//     _animationController.dispose();
+//     super.dispose();
+//   }
+
+//   @override
+//   Widget build(BuildContext context) {
+//     final percentage = _animationController.value * 100;
+//     return Center(
+//       child: Container(
+//         width: double.infinity,
+//         height: 75.0,
+//         padding: EdgeInsets.symmetric(horizontal: 24.0),
+//         child: LiquidLinearProgressIndicator(
+//           value: _animationController.value,
+//           backgroundColor: Colors.white,
+//           valueColor: AlwaysStoppedAnimation(Colors.blue),
+//           borderRadius: 12.0,
+//           center: Text(
+//             "${percentage.toStringAsFixed(0)}%",
+//             style: TextStyle(
+//               color: Colors.lightBlueAccent,
+//               fontSize: 20.0,
+//               fontWeight: FontWeight.bold,
+//             ),
+//           ),
+//         ),
+//       ),
+//     );
+//   }
+// }
