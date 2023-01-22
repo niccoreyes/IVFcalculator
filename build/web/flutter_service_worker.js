@@ -7,8 +7,9 @@ const RESOURCES = {
 "assets/AssetManifest.json": "2efbb41d7877d10aac9d091f58ccd7b9",
 "assets/FontManifest.json": "dc3d03800ccca4601324923c0b1d6d57",
 "assets/fonts/MaterialIcons-Regular.otf": "6c7f93ed6f4e2d0d2f197b38d405ec78",
-"assets/NOTICES": "06f9b2b3a254f7cd95b962a4376ee2cc",
+"assets/NOTICES": "31919a7aab06b0a9ab85c28bc54eadc4",
 "assets/packages/cupertino_icons/assets/CupertinoIcons.ttf": "57d849d738900cfd590e9adc7e208250",
+"assets/shaders/ink_sparkle.frag": "92666cc97576adbea2e2d3061a953137",
 "canvaskit/canvaskit.js": "678d9f53b0e5c5f22543631f43279fb9",
 "canvaskit/canvaskit.wasm": "6972cd6e8f48c5f3c027416c7b2443a6",
 "canvaskit/profiling/canvaskit.js": "5a0f05139f1d43c603dcfc67d15b1ec9",
@@ -19,9 +20,9 @@ const RESOURCES = {
 "icons/Icon-512.png": "96e752610906ba2a93c65f8abe1645f1",
 "icons/Icon-maskable-192.png": "c457ef57daa1d16f64b27b786ec2ea3c",
 "icons/Icon-maskable-512.png": "301a7604d45b3e739efc881eb04896ea",
-"index.html": "5c09d114d446d9a7c08b77f28237f6a2",
-"/": "5c09d114d446d9a7c08b77f28237f6a2",
-"main.dart.js": "132ec9b0edbe302186d0484fe2ac0926",
+"index.html": "08f44062bb848a3b26b035640c806463",
+"/": "08f44062bb848a3b26b035640c806463",
+"main.dart.js": "aba400419451402cb5fbf7159dbabc1e",
 "manifest.json": "06798d3e49addc633e0569ad2cd703b6",
 "version.json": "ffafe20be33b64723116377b1e41597b"
 };
@@ -65,6 +66,8 @@ self.addEventListener("activate", function(event) {
         await caches.delete(TEMP);
         // Save the manifest to make future upgrades efficient.
         await manifestCache.put('manifest', new Response(JSON.stringify(RESOURCES)));
+        // Claim client to enable caching on first launch
+        self.clients.claim();
         return;
       }
       var oldManifest = await manifest.json();
@@ -90,6 +93,8 @@ self.addEventListener("activate", function(event) {
       await caches.delete(TEMP);
       // Save the manifest to make future upgrades efficient.
       await manifestCache.put('manifest', new Response(JSON.stringify(RESOURCES)));
+      // Claim client to enable caching on first launch
+      self.clients.claim();
       return;
     } catch (err) {
       // On an unhandled exception the state of the cache cannot be guaranteed.

@@ -365,31 +365,47 @@ class _MyHomePageState extends State<MyHomePage> {
               }),
             ),
             const SizedBox(height: 16.0),
-            DropdownButtonFormField(
-                decoration: const InputDecoration(
-                    prefixIcon: Icon(Icons.add),
-                    labelText: "Insensible Losses",
-                    border: OutlineInputBorder()),
-                value: selectInsensible,
-                items: insensibleLosses
-                    .map((item) => DropdownMenuItem<String>(
-                        value: item,
-                        child: Text(
-                          item,
-                          style: const TextStyle(fontSize: 16),
-                        )))
-                    .toList(),
-                onChanged: (item) {
-                  setState(() {
-                    selectInsensible = item;
-                    if (selectInsensible != null) {
-                      try {
-                        insensibleVal = double.parse(selectInsensible!);
-                      } catch (e) {}
-                      totalSum();
-                    }
-                  });
-                }),
+            TextFormField(
+              decoration: const InputDecoration(
+                  border: OutlineInputBorder(),
+                  labelText: 'Insensible Losses',
+                  prefixIcon: Icon(Icons.add)),
+              keyboardType: TextInputType.number,
+              initialValue: insensibleVal == 0 ? "" : insensibleVal.toString(),
+              onChanged: (value) => setState(() {
+                try {
+                  insensibleVal = double.parse(value);
+                } catch (e) {
+                  insensibleVal = 0.00;
+                }
+                totalSum();
+              }),
+            ),
+            // DropdownButtonFormField(
+            //     decoration: const InputDecoration(
+            //         prefixIcon: Icon(Icons.add),
+            //         labelText: "Insensible Losses",
+            //         border: OutlineInputBorder()),
+            //     value: selectInsensible,
+            //     items: insensibleLosses
+            //         .map((item) => DropdownMenuItem<String>(
+            //             value: item,
+            //             child: Text(
+            //               item,
+            //               style: const TextStyle(fontSize: 16),
+            //             )))
+            //         .toList(),
+            //     onChanged: (item) {
+            //       setState(() {
+            //         selectInsensible = item;
+            //         if (selectInsensible != null) {
+            //           try {
+            //             insensibleVal = double.parse(selectInsensible!);
+            //           } catch (e) {}
+            //           totalSum();
+            //         }
+            //       });
+            //     }),
             const SizedBox(height: 16.0),
             //urine output
             TextFormField(
@@ -452,7 +468,7 @@ class _MyHomePageState extends State<MyHomePage> {
             Row(
               children: [
                 const Text(
-                  "FLUSH",
+                  "D5W",
                   style: TextStyle(fontSize: 20),
                 ),
                 Expanded(
@@ -492,7 +508,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   ),
                 ),
                 const Text(
-                  "D5W",
+                  "FLUSH",
                   style: TextStyle(fontSize: 20),
                 ),
               ],
@@ -502,19 +518,19 @@ class _MyHomePageState extends State<MyHomePage> {
             Container(
               width: double.infinity,
               height: 35,
-              padding: EdgeInsets.symmetric(horizontal: 24.0),
+              padding: const EdgeInsets.symmetric(horizontal: 24.0),
               child: LiquidLinearProgressIndicator(
                 value: d5WvsPush, // Defaults to 0.5.
-                valueColor: AlwaysStoppedAnimation(Colors
+                valueColor: const AlwaysStoppedAnimation(Colors
                     .blue), // Defaults to the current Theme's accentColor.
-                backgroundColor: Color.fromARGB(255, 249, 255,
+                backgroundColor: const Color.fromARGB(255, 249, 255,
                     254), // Defaults to the current Theme's backgroundColor.
                 borderColor: Colors.blue,
                 borderWidth: 2.0,
                 borderRadius: 12.0,
                 direction: Axis
                     .horizontal, // The direction the liquid moves (Axis.vertical = bottom to top, Axis.horizontal = left to right). Defaults to Axis.horizontal.
-                center: Text("Flush ${(d5WvsPush * 100).toStringAsFixed(0)}%",
+                center: Text("D5W ${((d5WvsPush) * 100).toStringAsFixed(0)}%",
                     style:
                         const TextStyle(color: Colors.white, shadows: <Shadow>[
                       Shadow(
