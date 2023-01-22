@@ -8,11 +8,11 @@ With the IVF Hypernatremia Calculator, managing fluid levels for IVF patients ha
 
 * **Easy to use**: Simply enter the patient's age, gender, weight, and their sensible and insensible losses and the app will calculate the appropriate amount of flushing or fluids to administer.
 
-* **Essential tool**: This app is an essential tool for any medical professional working in the field of IVF.
+* **Convenient tool**: This app is an convenient tool for any medical professional working to calculate appropriate IVF fluids.
 
-* **Accurate calculations**: The app uses a clinically validated formula to ensure accurate calculations.
+* **Accurate calculations**: The app uses a automatically computes the next variable based on the values in the fields to ensure appropriate breakdown.
 
-* **Avoid Hypernatremia**: The app helps avoid the dangers of hypernatremia by ensuring patients receive the correct amount of fluids
+* **Side Notes feature**: Additional feature when adding side notes for consultants wanting to understand the process of calculation is automatically generated as well
 
 * **Support**: If you have any questions or issues with the app, please feel free to contact me.
 
